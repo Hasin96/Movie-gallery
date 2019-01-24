@@ -20,6 +20,6 @@ interface posters {
 
 export interface Image {
     id: number,
-    backdrops: backdrops,
-    posters: posters
+    backdrops: backdrops[],
+    posters: posters[]
 }

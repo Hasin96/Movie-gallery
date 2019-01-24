@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Http} from '@angular/http';
 
 import { configuration } from '../config/config';
 
 // models
-import { TopRatedMovies } from './models/top-rated-movies';
+import { Image } from './models/image';
 import { Subscription, ReplaySubject, Observable } from 'rxjs';
 
 // common serivce
@@ -19,25 +20,32 @@ export class CarouselImagesService {
 
   private subImages: Subscription;
 
+  //subject
+  private subject: ReplaySubject<Image[]>;
+
   // identifiers
   private movieId: number;
 
   // image properties
-  
+  private images: Image[] = [];
 
   constructor(private http: HttpClient,
               private common: CommonService) { }
 
-  public getImages(movieId: number) {
+  public getImages(movieId: number) : Observable<Image[]> {
 
-    if(movieId !== movieId) {
+    if(this.movieId !== movieId) {
       this.movieId = movieId;
     }
+
+    this.subject = this.common.replaySubjectComplete(this.subject);
 
     if(!this.subscribeToSource()) {
 
       this.build();
     }
+
+    return this.subject.asObservable();
 
   }
 
@@ -48,11 +56,12 @@ export class CarouselImagesService {
     let didSubscribe: boolean = false;
 
     if(!this.common.isSubscriptionValid(this.subImages)) {
-        this.http.get(`https://api.themoviedb.org/3/movie/${this.movieId}/images?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&language=en-GB`)
+        this.http.get<Image[]>(`https://api.themoviedb.org/3/movie/${this.movieId}/images?api_key=cc86d53f868a7efefe0b7f6ca0bc872c`)
           .subscribe(
-            (obj) => {
+            (obj: Image[]) => {
               console.log(METHOD_NAME, JSON.stringify(obj, null, 2));
-
+              this.images = obj;
+              this.build();
             }
           )
 
@@ -61,5 +70,15 @@ export class CarouselImagesService {
 
     return didSubscribe;
 
+  }
+
+  private build() {
+    const METHOD_NAME = `${this.CLASS_NAME} build()`;
+
+    if(!this.common.hasArrayData(this.images)) {
+      console.log(METHOD_NAME, 'failed at checking for arrayData'); return;
+    }
+
+    this.subject.next(this.images);
   }
 }

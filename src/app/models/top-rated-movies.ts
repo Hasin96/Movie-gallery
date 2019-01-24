@@ -1,4 +1,4 @@
-interface results {
+export interface results {
     vote_count: number,
     id: number,
     video: boolean,
@@ -20,5 +20,6 @@ export interface TopRatedMovies {
     total_results: number,
     total_pages: number,
     results: results[]
+    
 }
 
