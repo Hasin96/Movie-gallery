@@ -70,6 +70,7 @@ body {
 .slider__nav:checked:nth-of-type(4) ~ .slider__inner {
   left: -300%;
 }
+
 .slider__inner {
   position: absolute;
   top: 0;
@@ -86,6 +87,7 @@ body {
       -ms-flex-flow: row nowrap;
           flex-flow: row nowrap;
 }
+
 .slider__contents {
   height: 100vh;
   padding: 2rem;
@@ -119,7 +121,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    //background-image: url('./assets/test.jpg')
+    background-image: url('./assets/test.jpg')
 }
 .slider__slide2 {
     background-repeat: no-repeat;

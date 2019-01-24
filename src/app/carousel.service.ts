@@ -94,7 +94,7 @@ export class TokenInterceptorService {
       console.log(`${METHOD_NAME} hasArrayData failed`); return;
     }
       console.log(METHOD_NAME, JSON.stringify(this.topRated.results, null, 2));
-      let numberToRemove: number = this.topRated.results.length - 5;
+      let numberToRemove: number = this.topRated.results.length - 4;
       this.topRated.results.splice(4, numberToRemove);
       console.log(METHOD_NAME, JSON.stringify(this.topRated.results, null, 2));
       
@@ -102,7 +102,7 @@ export class TokenInterceptorService {
 
     let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
       topRatedMovies: this.topRated,
-      size: this.config.config.images.poster_sizes[6],
+      size: this.config.config.images.backdrop_sizes[3],
       base_url: this.config.config.images.secure_base_url
     }
 

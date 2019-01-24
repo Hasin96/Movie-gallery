@@ -6,6 +6,7 @@ import { TokenInterceptorService, TopRatedMoviesWrapper } from '../carousel.serv
 // Image Service
 import { CarouselImagesService } from '../carousel-images.service';
 import { Image } from '../models/image';
+
 import { results } from '../models/top-rated-movies';
 
 @Component({
@@ -37,30 +38,24 @@ export class CarouselComponent implements OnInit {
       (obj: TopRatedMoviesWrapper) => {
         this.topRatedMovies = obj;
         console.log(JSON.stringify(this.topRatedMovies, null, 2));
-
-        this.getImage();
+       
       }
     )
   }
 
-  private getImage() {
-    const METHOD_NAME = `${this.CLASS_NAME} getImage()`;
+ 
 
-    console.log(METHOD_NAME, 'LOOK HASIN', JSON.stringify(this.topRatedMovies.topRatedMovies, null, 2));
-    //this.imagePath = `${this.topRatedMovies.base_url}${this.topRatedMovies.size}${this.topRatedMovies.topRatedMovies.results[0].poster_path}`;
-    // this.imagePath = {
-    //   'background-image': `url(${this.topRatedMovies.base_url}${this.topRatedMovies.size}${this.topRatedMovies.topRatedMovies.results[0].backdrop_path})`
-    // };
-    if(this.topRatedMovies.topRatedMovies.results !== undefined && this.topRatedMovies.topRatedMovies.results !== null) {
-      console.log(JSON.stringify(this.topRatedMovies.topRatedMovies.results, null, 2));
-      this.imagePath = {
-        'background-image': `url(${this.topRatedMovies.base_url}${this.topRatedMovies.size}${this.topRatedMovies.topRatedMovies.results[0].poster_path})`
-      }
-     
-    }
-    console.log(METHOD_NAME, this.imagePath);
+  getImagePath(movie: results) {
+    const METHOD_NAME = this.CLASS_NAME + 'getImagePath()';
 
+    console.log(METHOD_NAME, JSON.stringify(movie, null, 2));
     
+    this.imagePath = {
+      'background-image': `url(${this.topRatedMovies.base_url}${this.topRatedMovies.size}${movie.backdrop_path})`
+    }
+
+    console.log(METHOD_NAME, JSON.stringify(this.imagePath, null, 2));
+    return this.imagePath;
   }
 
   // private getImages(movieId) {
