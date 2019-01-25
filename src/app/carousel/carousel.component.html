@@ -17,8 +17,11 @@
     <!-- <div *ngFor="let movie of topRatedMovies.topRatedMovies.results"> -->
     <div class="slider__contents slider__slide1" *ngFor="let movie of topRatedMovies.topRatedMovies.results" [ngStyle]="getImagePath(movie)">
       <!-- <i class="slider__image fa fa-codepen"></i> -->
-      <!-- <h2 class="slider__caption">codepen</h2>
-            <p class="slider__txt">Lorem ipsum dolor sit amet, consectetur adipisicing elit. At cupiditate omnis possimus illo quos, corporis minima!</p> -->
+      <div class="slider__desc">
+        <h3 class="slider__genre">Latest</h3>
+        <h2 class="slider__caption">{{movie.title}}</h2> 
+        <!-- <p class="slider__txt">{{movie.overview}}</p>  -->
+      </div>
     </div>
     <!-- <div class="slider__contents slider__slide2"> -->
       <!-- <i class="slider__image fa fa-newspaper-o"></i> -->

@@ -7,7 +7,7 @@ import { TokenInterceptorService, TopRatedMoviesWrapper } from '../carousel.serv
 import { CarouselImagesService } from '../carousel-images.service';
 import { Image } from '../models/image';
 
-import { results } from '../models/top-rated-movies';
+import { results, TopRatedMovies } from '../models/top-rated-movies';
 
 @Component({
   selector: 'app-carousel',
@@ -17,7 +17,7 @@ import { results } from '../models/top-rated-movies';
 export class CarouselComponent implements OnInit {
   private CLASS_NAME = `CarouselComponent`;
 
-  private topRatedMovies: TopRatedMoviesWrapper;
+  private topRatedMovies: TopRatedMovies;
   private imagePath;
 
   private movieId: number;
@@ -35,7 +35,7 @@ export class CarouselComponent implements OnInit {
   private getContent() {
     this.service.getMovies()
     .subscribe(
-      (obj: TopRatedMoviesWrapper) => {
+      (obj: TopRatedMovies) => {
         this.topRatedMovies = obj;
         console.log(JSON.stringify(this.topRatedMovies, null, 2));
        
@@ -45,18 +45,22 @@ export class CarouselComponent implements OnInit {
 
  
 
-  getImagePath(movie: results) {
-    const METHOD_NAME = this.CLASS_NAME + 'getImagePath()';
+  // getImagePath(movie: results) {
+  //   const METHOD_NAME = this.CLASS_NAME + 'getImagePath()';
 
-    console.log(METHOD_NAME, JSON.stringify(movie, null, 2));
+  //   console.log(METHOD_NAME, JSON.stringify(movie, null, 2));
     
-    this.imagePath = {
-      'background-image': `url(${this.topRatedMovies.base_url}${this.topRatedMovies.size}${movie.backdrop_path})`
-    }
+  //   this.imagePath = {
+  //     'background-image': `linear-gradient(
+  //       rgba(0, 0, 0, 0.7),
+  //       rgba(0, 0, 0, 0.7),
+  //       rgba(0, 0, 0, 0.7)
+  //     ),url(${this.topRatedMovies.base_url}${this.topRatedMovies.size}${movie.backdrop_path})`
+  //   }
 
-    console.log(METHOD_NAME, JSON.stringify(this.imagePath, null, 2));
-    return this.imagePath;
-  }
+  //   console.log(METHOD_NAME, JSON.stringify(this.imagePath, null, 2));
+  //   return this.imagePath;
+  // }
 
   // private getImages(movieId) {
 

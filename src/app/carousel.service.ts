@@ -9,7 +9,7 @@ import { Subscription, ReplaySubject, Observable, from } from 'rxjs';
 
 // commons service
 import { CommonService } from './common.service';
-
+import { map } from 'rxjs/operators';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json',
@@ -47,69 +47,75 @@ export class TokenInterceptorService {
               private common: CommonService
               ) { }
 
-  public getMovies(): Observable<TopRatedMoviesWrapper> {
-    const METHOD_NAME = `${this.CLASS_NAME} getMovies()`;
-    console.log(METHOD_NAME);
-
-    this.subject = this.common.replaySubjectComplete(this.subject);
-
-    if (!this.subscribeToSource()) {
-
-
-      this.build();
-    }
-
-    return this.subject.asObservable();
+  public getMovies() : Observable<TopRatedMovies> {
+    return this.http.get<TopRatedMovies>(this.url)
+        .pipe(map(data => data));
 
   }
 
-  private subscribeToSource(): boolean {
-    const METHOD_NAME = `${this.CLASS_NAME} subscribeToSource()`;
-    console.log(METHOD_NAME);
+  // public getMovies(): Observable<TopRatedMoviesWrapper> {
+  //   const METHOD_NAME = `${this.CLASS_NAME} getMovies()`;
+  //   console.log(METHOD_NAME);
 
-    let didSubscribe: boolean = false;
+  //   this.subject = this.common.replaySubjectComplete(this.subject);
 
-    if (!this.common.isSubscriptionValid(this.subTopRatedMovies)) {
-      this.http.get<TopRatedMovies>(this.url)
-        .subscribe(
-          (movies: TopRatedMovies) => {
-            this.topRated = movies;
-            this.build();
+  //   if (!this.subscribeToSource()) {
 
-          },
-          (err) => console.log(`${METHOD_NAME} failed err`)
-        );
 
-        didSubscribe = true;
-    }
+  //     this.build();
+  //   }
+
+  //   return this.subject.asObservable();
+
+  // }
+
+  // private subscribeToSource(): boolean {
+  //   const METHOD_NAME = `${this.CLASS_NAME} subscribeToSource()`;
+  //   console.log(METHOD_NAME);
+
+  //   let didSubscribe: boolean = false;
+
+  //   if (!this.common.isSubscriptionValid(this.subTopRatedMovies)) {
+  //     this.http.get<TopRatedMovies>(this.url)
+  //       .subscribe(
+  //         (movies: TopRatedMovies) => {
+  //           this.topRated = movies;
+  //           this.build();
+
+  //         },
+  //         (err) => console.log(`${METHOD_NAME} failed err`)
+  //       );
+
+  //       didSubscribe = true;
+  //   }
     
-    return didSubscribe;
-  }
+  //   return didSubscribe;
+  // }
 
-  private build() {
-    const METHOD_NAME = `${this.CLASS_NAME} build()`;
-    console.log(METHOD_NAME);
+  // private build() {
+  //   const METHOD_NAME = `${this.CLASS_NAME} build()`;
+  //   console.log(METHOD_NAME);
 
-    if(!this.common.hasArrayData(this.topRated.results)) {
-      console.log(`${METHOD_NAME} hasArrayData failed`); return;
-    }
-      console.log(METHOD_NAME, JSON.stringify(this.topRated.results, null, 2));
-      let numberToRemove: number = this.topRated.results.length - 4;
-      this.topRated.results.splice(4, numberToRemove);
-      console.log(METHOD_NAME, JSON.stringify(this.topRated.results, null, 2));
+  //   if(!this.common.hasArrayData(this.topRated.results)) {
+  //     console.log(`${METHOD_NAME} hasArrayData failed`); return;
+  //   }
+  //     console.log(METHOD_NAME, JSON.stringify(this.topRated.results, null, 2));
+  //     let numberToRemove: number = this.topRated.results.length - 4;
+  //     this.topRated.results.splice(4, numberToRemove);
+  //     console.log(METHOD_NAME, JSON.stringify(this.topRated.results, null, 2));
       
 
 
-    let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-      topRatedMovies: this.topRated,
-      size: this.config.config.images.backdrop_sizes[3],
-      base_url: this.config.config.images.secure_base_url
-    }
+  //   let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
+  //     topRatedMovies: this.topRated,
+  //     size: this.config.config.images.backdrop_sizes[3],
+  //     base_url: this.config.config.images.secure_base_url
+  //   }
 
-    this.subject.next(wrapper);
-  }
+  //   this.subject.next(wrapper);
+  // }
 
-  // RXJS Subject
+  // // RXJS Subject
 
   
   
