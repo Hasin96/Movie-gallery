@@ -1,4 +1,7 @@
-export interface results {
+import { Genre } from "./genres";
+
+
+export interface results extends Genre {
     vote_count: number,
     id: number,
     video: boolean,
@@ -8,7 +11,7 @@ export interface results {
     poster_path: string,
     original_language: string,
     original_title: string,
-    genre_ids: Array<number>,
+    genre_ids: number[],
     backdrop_path: string,
     adult: boolean,
     overview: string,
