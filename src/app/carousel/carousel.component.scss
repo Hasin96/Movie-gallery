@@ -26,7 +26,7 @@
     z-index: 10;
     outline: 6px solid #ccc;
     outline-offset: -6px;
-    box-shadow: 0 0 0 0 #333, 0 0 0 0 rgba(51, 51, 51, 0);
+    box-shadow: 0 0 0 0 purple, 0 0 0 0 purple;
     cursor: pointer;
     -webkit-appearance: none;
        -moz-appearance: none;
@@ -124,7 +124,8 @@
   }
 
   .slider__desc {
-    margin-left:50px;
+    margin-left:5rem;
+    margin-bottom: 5rem;
     text-align:left;
   }
 
@@ -156,87 +157,31 @@
     }
   }
 
-  
-.btn {
-  &:link,
-  &:visited {
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 1.5rem 4rem;
-      display: inline-block;
-      border-radius: 10rem;
-      transition: all .2s;
-      position: relative;
-      font-size:1.6rem;
-  }
-  &--animate {
-      animation: moveInButton .5s ease-out 0.75s;
-      animation-fill-mode: backwards;
-  }
-  
-  &:hover {
-      transform: translateY(-0.3rem);
-      box-shadow: 0 1rem 2rem rgba(0,0,0, 0.2);
+.slider__view {
+  padding: 0;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  background: none;
 
-      &::after {
-          transform: scaleX(1.4) scaleY(1.6);
-          opacity: 0;
-      }
-  }
+  color: #fff;
+  border: 2px purple solid;
+  padding: 5px 10px;
+  border-radius:100px;
+  background-color: rgba(0, 0, 0, 0.8);
+  width:100px;
+  transition: 0.7s ease-out;
   
-  &:active {
-      transform: translateY(-1px);
-      box-shadow: 0 0.5rem 1rem rgba(0,0,0, 0.2);
-  }
-  
-  &--white {
-
-      &::after {
-      }
-  }
-
-  &--green {
-
-      &::after {
-      }
-  }
-  
-  &::after {
-      content: "";
-      display: inline-block;
-      height:100%;
-      width:100%;
-      border-radius:10rem;
-      position: absolute;
-      top:0;
-      left:0;
-      z-index: -1;
-      transition: all .4s;
-  }
 }
 
-.btn-text {
-  &:link,
-  &:visited {
-      //font-size:$default-fontsize;
-      //color: $color-primary;
-      display:inline-block;
-      text-decoration:none;
-      //border-bottom: 1px solid $color-primary;
-      padding:3px;
-      transition: all .2s;
+.slider__view:hover {
+  border: 2px white solid;
+  background-color: rgba(0, 0, 0, 0.2);
+  color:purple;
+}
 
-  }
-
-  &:hover {
-     // background-color:$color-primary;
-      color:#fff;
-      box-shadow: 0 1rem 2rem rgba(0,0,0, .15);
-      transform: translateY(-2px);
-  }
-
-  &:active {
-      box-shadow: 0 0.5rem 1rem rgba(0,0,0, 0.2);
-      transform: translateY(0);
-  }
+.slider__view:active {
+  border: 2px darkred solid;
+  color:darkred;
 }

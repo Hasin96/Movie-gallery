@@ -1,0 +1,16 @@
+.card {
+    padding: 8rem;
+    display:flex;
+    justify-content: space-evenly;
+
+    &__box {
+        background-color: red;
+        height: 240px;
+        width: 136px;
+
+        &--img {
+            width:100%;
+            height:200px;
+        }
+    }
+}

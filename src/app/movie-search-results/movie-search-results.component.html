@@ -1,0 +1,14 @@
+<section class="card">
+  <div class="card__box" *ngFor="let movie of searchedMovies?.topRatedMovies?.results">
+    <div class="card__box--img" [ngStyle]="getImagePath()">
+
+    </div>
+    <div class="card__box--content">
+        <p class="slider__caption">{{movie.title}}</p> 
+        <p class="slider__rating">{{movie.genres.name}} | {{movie.vote_average}} Rating</p>
+        <p>{{movie.release_date}}</p>
+    </div>
+
+  </div>
+  
+</section>

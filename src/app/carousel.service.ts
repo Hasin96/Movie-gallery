@@ -35,8 +35,11 @@ export class TokenInterceptorService {
   private genreURL: string = 'https://api.themoviedb.org/3/genre/movie/list?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&language=en-GB';
   private url: string = 'https://api.themoviedb.org/3/movie/popular?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&language=en-GB&page=1'
 
-  private topRatedMovies: TopRatedMovies;
+  private movieUrl:string = "https://api.themoviedb.org/3/search/movie?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&language=en-US&page=1&include_adult=false&query=";
 
+  private topRatedMovies: TopRatedMovies;
+  private topRatedMoviesTest: TopRatedMovies;
+  private genresTest;
   // for genre
   private genres;
 
@@ -52,41 +55,21 @@ export class TokenInterceptorService {
               ) { }
 
   public getMovies() : Observable<TopRatedMoviesWrapper> {
-    // let pie = this.http.get<TopRatedMovies>(this.url)
-    //     .pipe(map(data => {
 
-    // const METHOD_NAME = this.CLASS_NAME + 'GetMovies()';
-    // console.log(METHOD_NAME, JSON.stringify(data.results, null, 2));
-    // let numberToRemove: number = data.results.length - 4;
-    // data.results.splice(4, numberToRemove);
-    // console.log(METHOD_NAME, JSON.stringify(data.results, null, 2));
-
-    // let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-    //   topRatedMovies: data,
-    //   size: this.config.config.images.backdrop_sizes[3],
-    //   base_url: this.config.config.images.secure_base_url
-    // }
-    //       return wrapper
-    //     }));
-
-   return this.http.get<TopRatedMovies>(this.url)
+    return this.http.get<TopRatedMovies>(this.url)
         .pipe(switchMap(movies => {
           this.topRatedMovies = movies;
-
+          
           let numberToRemove: number = this.topRatedMovies.results.length - 4;
           this.topRatedMovies.results.splice(4, numberToRemove);
-          console.log("HASIN", JSON.stringify(this.topRatedMovies, null, 2));
       
-          let pie = this.http.get<Genre>(this.genreURL)
+          return this.http.get<Genre>(this.genreURL)
             .pipe(map(data => {
-              console.log("LOOK", JSON.stringify(data, null, 2));
               this.genres = data;
-              console.log("HASIN", JSON.stringify(this.genres, null, 2));
               
               this.topRatedMovies.results = this.topRatedMovies.results.filter(
                 (movie: results, index: number, arr: results[]) => {
                   let genreId: number = movie.genre_ids[0];
-                  console.log("genreid", genreId);
                   let genre;
 
                   this.genres.genres.filter(
@@ -96,16 +79,8 @@ export class TokenInterceptorService {
                       }
                     }
                   )
-
-                  console.log("genre", genre);
-
                   arr[index].genres = genre;
                   return movie;
-                }
-              )
-              this.topRatedMovies.results.filter(
-                (movie: results) => {
-                 // console.log("HASIN", JSON.stringify(movie.name, null, 2));
                 }
               )
 
@@ -116,78 +91,59 @@ export class TokenInterceptorService {
               }
 
               return wrapper;
-            }))
+            }));
+        }));
+  }
 
-        return pie;
+  getMovieById(id: string) : results[] { 
+    let movie = this.topRatedMovies.results.filter(
+      (movie: results) => {
+        return movie.id.toString() == id;
+      }
+    )
 
-        }))
+    return movie;
+  }
+
+  getMoviesBySearch(term: string): Observable<TopRatedMoviesWrapper> {
+    //return this.http.get("https://api.themoviedb.org/3/search/multi?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&query=" + term);
+    //return this.http.get("https://api.themoviedb.org/3/search/keyword?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&page=1&query=" + term);
+    return this.http.get<TopRatedMovies>(this.movieUrl + term)
+        .pipe(switchMap(movies => {
+          this.topRatedMoviesTest = movies;
+          
+          return this.http.get<Genre>(this.genreURL)
+            .pipe(map(data => {
+              this.genresTest = data;
+              
+              this.topRatedMovies.results = this.topRatedMovies.results.filter(
+                (movie: results, index: number, arr: results[]) => {
+                  let genreId: number = movie.genre_ids[0];
+                  let genre;
+
+                  this.genres.genres.filter(
+                    (val) => {
+                      if (val.id == genreId) {
+                        genre = val;
+                      }
+                    }
+                  )
+                  arr[index].genres = genre;
+                  return movie;
+                }
+              )
+
+              let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
+                topRatedMovies: this.topRatedMovies,
+                size: this.config.config.images.backdrop_sizes[3],
+                base_url: this.config.config.images.secure_base_url
+              }
+
+              return wrapper;
+            }));
+        }));
 
   }
 
-  // public getMovies(): Observable<TopRatedMoviesWrapper> {
-  //   const METHOD_NAME = `${this.CLASS_NAME} getMovies()`;
-  //   console.log(METHOD_NAME);
-
-  //   this.subject = this.common.replaySubjectComplete(this.subject);
-
-  //   if (!this.subscribeToSource()) {
-
-
-  //     this.build();
-  //   }
-
-  //   return this.subject.asObservable();
-
-  // }
-
-  // private subscribeToSource(): boolean {
-  //   const METHOD_NAME = `${this.CLASS_NAME} subscribeToSource()`;
-  //   console.log(METHOD_NAME);
-
-  //   let didSubscribe: boolean = false;
-
-  //   if (!this.common.isSubscriptionValid(this.subTopRatedMovies)) {
-  //     this.http.get<TopRatedMovies>(this.url)
-  //       .subscribe(
-  //         (movies: TopRatedMovies) => {
-  //           this.topRated = movies;
-  //           this.build();
-
-  //         },
-  //         (err) => console.log(`${METHOD_NAME} failed err`)
-  //       );
-
-  //       didSubscribe = true;
-  //   }
-    
-  //   return didSubscribe;
-  // }
-
-  // private build() {
-  //   const METHOD_NAME = `${this.CLASS_NAME} build()`;
-  //   console.log(METHOD_NAME);
-
-  //   if(!this.common.hasArrayData(this.topRated.results)) {
-  //     console.log(`${METHOD_NAME} hasArrayData failed`); return;
-  //   }
-  //     console.log(METHOD_NAME, JSON.stringify(this.topRated.results, null, 2));
-  //     let numberToRemove: number = this.topRated.results.length - 4;
-  //     this.topRated.results.splice(4, numberToRemove);
-  //     console.log(METHOD_NAME, JSON.stringify(this.topRated.results, null, 2));
-      
-
-
-  //   let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-  //     topRatedMovies: this.topRated,
-  //     size: this.config.config.images.backdrop_sizes[3],
-  //     base_url: this.config.config.images.secure_base_url
-  //   }
-
-  //   this.subject.next(wrapper);
-  // }
-
-  // // RXJS Subject
-
-  
   
 }

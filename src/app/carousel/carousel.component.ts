@@ -9,6 +9,9 @@ import { Image } from '../models/image';
 
 import { results, TopRatedMovies } from '../models/top-rated-movies';
 
+// router
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
@@ -23,7 +26,8 @@ export class CarouselComponent implements OnInit {
   private movieId: number;
 
   constructor(private service: TokenInterceptorService,
-              private imageService: CarouselImagesService ) { }
+              private imageService: CarouselImagesService,
+              private router: Router ) { }
 
   ngOnInit() {
     const METHOD_NAME = `${this.CLASS_NAME} ngOnInit()`;
@@ -39,8 +43,8 @@ export class CarouselComponent implements OnInit {
         this.topRatedMovies = obj;
         this.count++;
         console.log("hasin", this.count)
-        console.log("pie", JSON.stringify(obj, null, 2));
-        console.log("pie", JSON.stringify(this.topRatedMovies, null, 2));
+        //console.log("pie", JSON.stringify(obj, null, 2));
+        //console.log("pie", JSON.stringify(this.topRatedMovies, null, 2));
       }
     )
   }
@@ -50,7 +54,7 @@ export class CarouselComponent implements OnInit {
   getImagePath(movie: results) {
     const METHOD_NAME = this.CLASS_NAME + 'getImagePath()';
 
-    console.log(METHOD_NAME, JSON.stringify(movie, null, 2));
+    //console.log(METHOD_NAME, JSON.stringify(movie, null, 2));
     
     this.imagePath = {
       'background-image': `linear-gradient(
@@ -60,8 +64,13 @@ export class CarouselComponent implements OnInit {
       ),url(${this.topRatedMovies.base_url}${this.topRatedMovies.size}${movie.backdrop_path})`
     }
 
-    console.log(METHOD_NAME, JSON.stringify(this.imagePath, null, 2));
+    //console.log(METHOD_NAME, JSON.stringify(this.imagePath, null, 2));
     return this.imagePath;
+  }
+
+  private onClickDetailBtn(movie: results) {
+    alert("it works :3");
+      this.router.navigate(['movie-detail', movie.id]);
   }
 
   // private getImages(movieId) {
