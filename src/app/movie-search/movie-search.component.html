@@ -1,13 +1,10 @@
 <section class="navigation">
   <div class="navigation__search">
-    <input #searchData (keydown.enter)="search(searchData.value)" class="navigation__search-input" placeholder="Search Term"  />
+    <input #searchData  (keydown.enter)="search(searchData.value)" class="navigation__search-input" placeholder="Search Term"  />
   </div>
 </section>
 
+<movie-search-results [styles]="styles" [searchedMovies]="movies"></movie-search-results>
 
-<section *ngIf="movies?.topRatedMovies?.results" class="search-results">
-  <div class="search-results__results">
-      <movie-search-results [searchedMovies]="movies"></movie-search-results>
-  </div>
-</section>
+
 

@@ -12,6 +12,11 @@ export class MovieSearchComponent implements OnInit {
 
   private movies: TopRatedMoviesWrapper;
 
+  private styles = {
+    'z-index': '-1',
+    'zindex': '-1'
+  }
+
   constructor(private service: TokenInterceptorService) { }
 
   ngOnInit() {
@@ -40,7 +45,11 @@ export class MovieSearchComponent implements OnInit {
         }
       )
     }
-   
+
+        this.styles = {
+          'z-index': '10',
+          'zindex': '10'
+        }
   }
 
   // private checkTheDataFam() {

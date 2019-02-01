@@ -7,6 +7,9 @@ import { configuration } from '../config/config';
 import { TopRatedMovies, results } from './models/top-rated-movies';
 import { Subscription, ReplaySubject, Observable } from 'rxjs';
 
+// apikey
+import { apikey } from '../environments/movieApiKey';
+
 // commons service
 import { CommonService } from './common.service';
 import { map, switchMap } from 'rxjs/operators';
@@ -32,10 +35,10 @@ export interface TopRatedMoviesWrapper {
 export class TokenInterceptorService {
   private CLASS_NAME = "TokenInterceptorService";
 
-  private genreURL: string = 'https://api.themoviedb.org/3/genre/movie/list?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&language=en-GB';
-  private url: string = 'https://api.themoviedb.org/3/movie/popular?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&language=en-GB&page=1'
+  private genreURL: string = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+apikey+'&language=en-GB';
+  private url: string = 'https://api.themoviedb.org/3/movie/popular?api_key='+apikey+'&language=en-GB&page=1'
 
-  private movieUrl:string = "https://api.themoviedb.org/3/search/movie?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&language=en-US&page=1&include_adult=false&query=";
+  private movieUrl:string = "https://api.themoviedb.org/3/search/movie?api_key="+apikey+"&language=en-US&page=1&include_adult=false&query=";
 
   private topRatedMovies: TopRatedMovies;
   private topRatedMoviesTest: TopRatedMovies;
@@ -48,6 +51,9 @@ export class TokenInterceptorService {
 
   // REPLAY SUBJECT
   private subject: ReplaySubject<TopRatedMoviesWrapper>;
+
+  // apikey
+  private apikey: string = apikey;
 
   constructor(private http: HttpClient,
               private config: configuration,
