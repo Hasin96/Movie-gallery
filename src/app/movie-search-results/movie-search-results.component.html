@@ -1,5 +1,8 @@
 
 <section [ngStyle]="styles" class="search-results">
+    <div class="search-results__close">
+      <a href="#" (click)="closeSearchResults()">close</a>
+    </div>
     <div class="search-results__results">
         <section class="card">
             <div class="card__box" *ngFor="let movie of searchedMovies?.topRatedMovies?.results" (click)="onClickDetails(movie)">

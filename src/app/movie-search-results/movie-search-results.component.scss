@@ -25,9 +25,19 @@
 
 
 .search-results {
-    height:100vh;
     width:100%;
     color:black;
     position:absolute;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255, 1);
+
+    &__close {
+        margin-top:1rem;
+        margin-left:3rem;
+
+        & a:hover {
+            color:darkred;
+        }
+    }
+
+    
 }

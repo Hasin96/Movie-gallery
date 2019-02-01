@@ -27,7 +27,7 @@ export class MovieSearchComponent implements OnInit {
   }
 
   private search(term: string) {
-    console.log(term);
+    console.log("Hasin", term);
     if (this.movies === null || this.movies === undefined) {
       if (term !== '' || term !== undefined || term !== null) {
         console.log("HASIN", term);
@@ -40,10 +40,14 @@ export class MovieSearchComponent implements OnInit {
             }
           )
       }
+      this.styles = {
+        'z-index': '1000',
+        'zindex': '1000'
+      }
 
     } else {
       this.movies.topRatedMovies.results = [];
-
+      if (term !== '' || term !== undefined || term !== null) {
       this.sub = this.service.getMoviesBySearch(term)
         .subscribe(
           (obj: TopRatedMoviesWrapper) => {
@@ -52,9 +56,10 @@ export class MovieSearchComponent implements OnInit {
             console.log('HASIN', JSON.stringify(this.movies, null, 4));
           }
         )
+      }
       this.styles = {
-        'z-index': '10',
-        'zindex': '10'
+        'z-index': '1000',
+        'zindex': '1000'
       }
     }
 

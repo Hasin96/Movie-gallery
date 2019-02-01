@@ -58,4 +58,11 @@ export class MovieSearchResultsComponent implements OnInit {
     this.router.navigate(['movie-detail', movie.id]);
   }
 
+  closeSearchResults() {
+    this.styles = {
+      'z-index': '-1',
+      'zindex': '-1'
+    }
+  }
+
 }
