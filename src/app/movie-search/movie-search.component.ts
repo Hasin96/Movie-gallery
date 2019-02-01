@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TokenInterceptorService, TopRatedMoviesWrapper } from '../carousel.service';
 
 import { results, TopRatedMovies } from '../models/top-rated-movies';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'movie-search',
@@ -11,6 +12,8 @@ import { results, TopRatedMovies } from '../models/top-rated-movies';
 export class MovieSearchComponent implements OnInit {
 
   private movies: TopRatedMoviesWrapper;
+
+  private sub: Subscription;
 
   private styles = {
     'z-index': '-1',
@@ -26,30 +29,40 @@ export class MovieSearchComponent implements OnInit {
   private search(term: string) {
     console.log(term);
     if (this.movies === null || this.movies === undefined) {
-    if (term === '' || term === undefined || term === null) { return; }
-    this.service.getMoviesBySearch(term)
-      .subscribe(
-        (obj: TopRatedMoviesWrapper) => {
-          this.movies = obj;
-          console.log('HASIN',JSON.stringify(this.movies, null, 4));
-        }
-      )
+      if (term !== '' || term !== undefined || term !== null) {
+        console.log("HASIN", term);
+        this.sub = this.service.getMoviesBySearch(term)
+          .subscribe(
+            (obj: TopRatedMoviesWrapper) => {
+              this.movies = obj;
+              console.log('HASIN', JSON.stringify(obj, null, 4));
+              console.log('HASIN', JSON.stringify(this.movies, null, 4));
+            }
+          )
+      }
+
     } else {
       this.movies.topRatedMovies.results = [];
 
-      this.service.getMoviesBySearch(term)
-      .subscribe(
-        (obj: TopRatedMoviesWrapper) => {
-          this.movies = obj;
-          console.log('HASIN',JSON.stringify(this.movies, null, 4));
-        }
-      )
+      this.sub = this.service.getMoviesBySearch(term)
+        .subscribe(
+          (obj: TopRatedMoviesWrapper) => {
+            this.movies = obj;
+            console.log('HASIN', JSON.stringify(obj, null, 4));
+            console.log('HASIN', JSON.stringify(this.movies, null, 4));
+          }
+        )
+      this.styles = {
+        'z-index': '10',
+        'zindex': '10'
+      }
     }
 
-        this.styles = {
-          'z-index': '10',
-          'zindex': '10'
-        }
+
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   // private checkTheDataFam() {

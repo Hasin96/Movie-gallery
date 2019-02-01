@@ -15,7 +15,7 @@ import { StylesCompileDependency } from '@angular/compiler';
 export class MovieSearchResultsComponent implements OnInit {
 
   @Input()
-    searchedMovies: TopRatedMoviesWrapper;
+    searchedMovies: TopRatedMoviesWrapper = null;
     
   @Input()
     styles;
@@ -54,7 +54,7 @@ export class MovieSearchResultsComponent implements OnInit {
       'z-index': '-1',
       'zindex': '-1'
     };
-    
+
     this.router.navigate(['movie-detail', movie.id]);
   }
 

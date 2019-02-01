@@ -1,6 +1,7 @@
 .card {
     display:flex;
     justify-content: flex-start;
+    flex-wrap: wrap;
 
     &__box {
         height: 280px;
