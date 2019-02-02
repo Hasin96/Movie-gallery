@@ -3,6 +3,8 @@ import { TokenInterceptorService, TopRatedMoviesWrapper } from '../carousel.serv
 
 import { results, TopRatedMovies } from '../models/top-rated-movies';
 import { Subscription } from 'rxjs';
+import { PagerService } from '../shared/pager-service.service';
+
 
 @Component({
   selector: 'movie-search',
@@ -15,12 +17,18 @@ export class MovieSearchComponent implements OnInit {
 
   private sub: Subscription;
 
+  pager: any = {};
+ 
+  // paged items
+  pagedItems: TopRatedMoviesWrapper;
+
   private styles = {
     'z-index': '-1',
     'zindex': '-1'
   }
 
-  constructor(private service: TokenInterceptorService) { }
+  constructor(private service: TokenInterceptorService,
+              private pageService: PagerService) { }
 
   ngOnInit() {
     console.log("INIT");
@@ -35,8 +43,9 @@ export class MovieSearchComponent implements OnInit {
           .subscribe(
             (obj: TopRatedMoviesWrapper) => {
               this.movies = obj;
-              console.log('HASIN', JSON.stringify(obj, null, 4));
-              console.log('HASIN', JSON.stringify(this.movies, null, 4));
+
+              this.setPage(1);
+              
             }
           )
       }
@@ -52,8 +61,8 @@ export class MovieSearchComponent implements OnInit {
         .subscribe(
           (obj: TopRatedMoviesWrapper) => {
             this.movies = obj;
-            console.log('HASIN', JSON.stringify(obj, null, 4));
-            console.log('HASIN', JSON.stringify(this.movies, null, 4));
+
+            this.setPage(1);
           }
         )
       }
@@ -65,6 +74,16 @@ export class MovieSearchComponent implements OnInit {
 
 
   }
+
+  setPage(page: number) {
+    // get pager object from service
+    this.pager = this.pageService.getPager(this.movies.topRatedMovies.results.length, page);
+
+    // get current page of items
+    this.pagedItems = this.movies;
+    
+    this.pagedItems.topRatedMovies.results = this.movies.topRatedMovies.results.slice(this.pager.startIndex, this.pager.endIndex + 1);
+}
 
   ngOnDestroy() {
     this.sub.unsubscribe();

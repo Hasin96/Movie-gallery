@@ -5,7 +5,9 @@ import { TopRatedMoviesWrapper } from '../carousel.service';
 
 // router
 import { Router } from '@angular/router';
-import { StylesCompileDependency } from '@angular/compiler';
+
+// page service
+import { PagerService } from '../shared/pager-service.service';
 
 @Component({
   selector: 'movie-search-results',
@@ -19,6 +21,9 @@ export class MovieSearchResultsComponent implements OnInit {
     
   @Input()
     styles;
+
+  @Input()
+    pager: any = {};
 
   private imagePath = {};
 

@@ -25,10 +25,13 @@
 
 
 .search-results {
-    width:100%;
+    width:96%;
+    height:88vh;
     color:black;
     position:absolute;
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 0.8);
+    margin: 1% 0 1% 2%;
+    border-radius:10px;
 
     &__close {
         margin-top:1rem;
@@ -39,5 +42,36 @@
         }
     }
 
+    &__pagination {
+        margin-top:-30px;
+    }
+
     
+}
+
+.pagination,
+.pagination li a {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  color: black;
+
+}
+
+ .pagination li { 
+    list-style: none;
+    margin:3px;
+}
+
+.pagination a {
+  font-weight: 300;
+  padding-top: 1px;
+  text-decoration:none;  
+  //border: 1px solid rgba(0,0,0,.25);
+  //border-left-width: 0;
+  min-width:44px;
+  min-height:44px;
+  color: rgba(255,255,255,.85);  
+  box-shadow: inset 0px 1px 0px 0px rgba(255,255,255,.35);
 }
