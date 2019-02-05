@@ -116,13 +116,11 @@ export class TokenInterceptorService {
     //return this.http.get("https://api.themoviedb.org/3/search/keyword?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&page=1&query=" + term);
     return this.http.get<TopRatedMovies>(this.movieUrl + term)
         .pipe(switchMap(movies => {
-          console.log("HASIN",JSON.stringify(movies, null, 4));
           this.topRatedMoviesTest = movies;
           
           return this.http.get<Genre>(this.genreURL)
             .pipe(map(data => {
               this.genresTest = data;
-              console.log("GENRES", JSON.stringify(data, null, 4));
               
               this.topRatedMoviesTest.results = this.topRatedMoviesTest.results.filter(
                 (movie: results, index: number, arr: results[]) => {
@@ -152,6 +150,8 @@ export class TokenInterceptorService {
         }));
 
   }
+
+  
 
   
 }

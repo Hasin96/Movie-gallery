@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MovieSearchResultsComponent } from './movie-search-results.component';
+import { MovieCarouselSmartComponent } from './movie-carousel-smart.component';
 
-describe('MovieSearchResultsComponent', () => {
-  let component: MovieSearchResultsComponent;
-  let fixture: ComponentFixture<MovieSearchResultsComponent>;
+describe('MovieCarouselSmartComponent', () => {
+  let component: MovieCarouselSmartComponent;
+  let fixture: ComponentFixture<MovieCarouselSmartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MovieSearchResultsComponent ]
+      declarations: [ MovieCarouselSmartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MovieSearchResultsComponent);
+    fixture = TestBed.createComponent(MovieCarouselSmartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,17 @@
+.movie-list {
+       display: flex;
+       justify-content: flex-start;
+       flex-direction: row;
+       flex-wrap: wrap;
+       height: 80vh;
+       margin: 9rem;
+
+    &__card {
+        display: flex;
+        height: 280px;
+        width: 175px;
+        background-color: black;
+        margin: 2.6rem;
+    }
+
+}

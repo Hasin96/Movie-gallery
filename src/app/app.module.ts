@@ -9,7 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { configuration } from '../config/config';
 import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 import { MovieSearchComponent } from './movie-search/movie-search.component';
-import { MovieSearchResultsComponent } from './movie-search-results/movie-search-results.component';
+import { TrendingMoviesComponent } from './trending-movies/trending-movies.component';
+import { MovieCarouselSmartComponent } from './movie-carousel-smart/movie-carousel-smart.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { MovieSearchResultsComponent } from './movie-search-results/movie-search
     CarouselComponent,
     MovieDetailComponent,
     MovieSearchComponent,
-    MovieSearchResultsComponent
+    TrendingMoviesComponent,
+    MovieCarouselSmartComponent
   ],
   imports: [
     BrowserModule,

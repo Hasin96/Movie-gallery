@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { TokenInterceptorService, TopRatedMoviesWrapper } from '../carousel.service';
 
 // Image Service
-import { CarouselImagesService } from '../carousel-images.service';
 import { Image } from '../models/image';
 
 import { results, TopRatedMovies } from '../models/top-rated-movies';
@@ -26,7 +25,6 @@ export class CarouselComponent implements OnInit {
   private movieId: number;
 
   constructor(private service: TokenInterceptorService,
-              private imageService: CarouselImagesService,
               private router: Router ) { }
 
   ngOnInit() {
