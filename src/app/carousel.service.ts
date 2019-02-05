@@ -5,7 +5,7 @@ import { configuration } from '../config/config';
 
 // models
 import { TopRatedMovies, results } from './models/top-rated-movies';
-import { Subscription, ReplaySubject, Observable } from 'rxjs';
+import { Subscription, ReplaySubject, Observable, of } from 'rxjs';
 
 // apikey
 import { apikey } from '../environments/movieApiKey';
@@ -36,15 +36,22 @@ export class TokenInterceptorService {
   private CLASS_NAME = "TokenInterceptorService";
 
   private genreURL: string = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+apikey+'&language=en-GB';
-  private url: string = 'https://api.themoviedb.org/3/movie/popular?api_key='+apikey+'&language=en-GB&page=1'
-
+  private url: string = 'https://api.themoviedb.org/3/movie/upcoming?api_key='+apikey+'&language=en-GB&page=1'
   private movieUrl:string = "https://api.themoviedb.org/3/search/movie?api_key="+apikey+"&language=en-US&page=1&include_adult=false&query=";
+  private popularMoviesUrl: string = `https://api.themoviedb.org/3/movie/popular?api_key=${apikey}&language=en-US&page=1`;
+  private trendingMoviesUrl: string = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apikey}&language=en-US&page=1`;
 
   private topRatedMovies: TopRatedMovies;
   private topRatedMoviesTest: TopRatedMovies;
   private genresTest;
   // for genre
   private genres;
+
+  // popular movies
+  private popularMovies: TopRatedMovies;
+
+  // trending movies
+  private trendingMovies: TopRatedMovies;
 
   // SUBJECT
   private subTopRatedMovies: Subscription;
@@ -151,7 +158,42 @@ export class TokenInterceptorService {
 
   }
 
-  
+  getPopularMovies(): Observable<TopRatedMoviesWrapper> {
+    return this.http.get<TopRatedMovies>(this.popularMoviesUrl)
+      .pipe(map((movies: TopRatedMovies) => {
+        this.popularMovies = movies;
 
-  
+        let numberToRemove: number = this.popularMovies.results.length - 12;
+        this.popularMovies.results.splice(12, numberToRemove);
+
+        let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
+          topRatedMovies: this.popularMovies,
+          size: this.config.config.images.backdrop_sizes[3],
+          base_url: this.config.config.images.secure_base_url
+        };
+
+        return wrapper;
+      }))
+
+  }
+
+  getTrendingMovies(): Observable<TopRatedMoviesWrapper> {
+    return this.http.get<TopRatedMovies>(this.trendingMoviesUrl)
+    .pipe(map((movies: TopRatedMovies) => {
+      this.trendingMovies = movies;
+
+      let numberToRemove: number = this.trendingMovies.results.length - 12;
+      this.trendingMovies.results.splice(12, numberToRemove);
+
+      let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
+        topRatedMovies: this.trendingMovies,
+        size: this.config.config.images.backdrop_sizes[3],
+        base_url: this.config.config.images.secure_base_url
+      };
+
+      console.log(JSON.stringify(this.trendingMovies, null, 2));
+
+      return wrapper;
+    }))
+  }
 }

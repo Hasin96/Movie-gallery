@@ -122,9 +122,7 @@ closeSearchResults() {
   }
 }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
+ 
 
   // private checkTheDataFam() {
   //   console.log("pineapple");

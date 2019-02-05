@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { TopRatedMoviesWrapper } from '../carousel.service';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'trending-movies',
@@ -7,9 +10,53 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TrendingMoviesComponent implements OnInit {
 
-  constructor() { }
+  @Input()
+    popularMovies: TopRatedMoviesWrapper;
+
+  @Input()
+    trendingMovies: TopRatedMoviesWrapper;
+
+  private imagePath: any;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  private getImagePath(poster_path: string) {
+
+    if (this.popularMovies !== undefined) {
+      this.imagePath = {
+        'background-image': `linear-gradient(
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 1)),
+        url(${this.popularMovies.base_url}${this.popularMovies.size}${poster_path})`,
+        'backgroundground-repeat': 'no-repeat',
+        'background-size': 'cover',
+        'background-position': 'center'
+      }
+
+      return this.imagePath;
+
+    } else if (this.trendingMovies !== undefined) {
+      this.imagePath = {
+        'background-image': `linear-gradient(
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 1)),
+        url(${this.trendingMovies.base_url}${this.trendingMovies.size}${poster_path})`,
+        'backgroundground-repeat': 'no-repeat',
+        'background-size': 'cover',
+        'background-position': 'center'
+      }
+
+      return this.imagePath;
+    }
+  }
+
+  private GetDetails(id: string) {
+    this.router.navigate(['movie-detail', id]);
   }
 
 }
