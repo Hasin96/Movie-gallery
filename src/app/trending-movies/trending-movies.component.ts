@@ -66,6 +66,8 @@ export class TrendingMoviesComponent implements OnInit {
         'background-size': 'cover',
         'background-position': 'center'
       }
+
+      return this.imagePath;
     }
   }
 

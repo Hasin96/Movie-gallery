@@ -72,6 +72,7 @@ export class TokenInterceptorService {
               ) { }
 
   public getMovies() : Observable<TopRatedMoviesWrapper> {
+    
 
     return this.http.get<TopRatedMovies>(this.url)
         .pipe(switchMap(movies => {
@@ -125,6 +126,7 @@ export class TokenInterceptorService {
   getMoviesBySearch(term: string): Observable<TopRatedMoviesWrapper> {
     //return this.http.get("https://api.themoviedb.org/3/search/multi?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&query=" + term);
     //return this.http.get("https://api.themoviedb.org/3/search/keyword?api_key=cc86d53f868a7efefe0b7f6ca0bc872c&page=1&query=" + term);
+    
     return this.http.get<TopRatedMovies>(this.movieUrl + term)
         .pipe(switchMap(movies => {
           this.topRatedMoviesTest = movies;

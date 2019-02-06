@@ -16,6 +16,7 @@ export interface results extends Genre {
     adult: boolean,
     overview: string,
     release_date: string
+    name: string
 }
 
 export interface TopRatedMovies {

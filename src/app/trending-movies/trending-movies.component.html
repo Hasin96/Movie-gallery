@@ -1,5 +1,5 @@
 <section class="movie-list" *ngIf="popularMovies">
-  <div class="movie-list__title">Popular top 20 Movies</div>
+  <div class="movie-list__heading">Popular top 20 Movies</div>
   <div class="movie-list__movie">
     <div class="movie-list__card" *ngFor="let movie of popularMovies.topRatedMovies.results" (click)="GetDetails(movie.id)">
       <div class="movie-list__card--img" [ngStyle]="getImagePath(movie.poster_path)">
@@ -10,9 +10,9 @@
 </section>
 
 <section class="movie-list" *ngIf="trendingMovies">
-    <div class="movie-list__title">Trending top 20 Movies</div>
+    <div class="movie-list__heading">Trending top 20 Movies</div>
   <div class="movie-list__movie">
-    <div class="movie-list__card" *ngFor="let Tmovie of trendingMovies.topRatedMovies.results" (click)="GetDetails(movie.id)">
+    <div class="movie-list__card" *ngFor="let Tmovie of trendingMovies.topRatedMovies.results" (click)="GetDetails(Tmovie.id)">
       <div class="movie-list__card--img" [ngStyle]="getImagePath(Tmovie.poster_path)">
         <span class="movie-list__title">{{Tmovie.title}}</span>
       </div>
@@ -20,12 +20,12 @@
   </div>
 </section>
 
-<section class="movie-list" *ngIf="trendingMovies">
-  <div class="movie-list__title">Popular top 20 Tv Shows</div>
+<section class="movie-list" *ngIf="popularTvShows">
+  <div class="movie-list__heading">Popular top 20 Tv Shows</div>
 <div class="movie-list__movie">
-  <div class="movie-list__card" *ngFor="let Tmovie of trendingMovies.topRatedMovies.results" (click)="GetDetails(movie.id)">
-    <div class="movie-list__card--img" [ngStyle]="getImagePath(Tmovie.poster_path)">
-      <span class="movie-list__title">{{Tmovie.title}}</span>
+  <div class="movie-list__card" *ngFor="let tvShow of popularTvShows.topRatedMovies.results" (click)="GetDetails(tvShow.id)">
+    <div class="movie-list__card--img" [ngStyle]="getImagePath(tvShow.poster_path)">
+      <span class="movie-list__title">{{tvShow.name}}</span>
     </div>
   </div>
 </div>

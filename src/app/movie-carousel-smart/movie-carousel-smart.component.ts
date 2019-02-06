@@ -36,6 +36,7 @@ export class MovieCarouselSmartComponent implements OnInit {
           .subscribe(
             (tvShows: TopRatedMoviesWrapper) => {
               this.popularTvShowsWrapper = tvShows;
+              console.log("HASIN", JSON.stringify(this.popularTvShowsWrapper, null, 2))
             }
           )
   }
