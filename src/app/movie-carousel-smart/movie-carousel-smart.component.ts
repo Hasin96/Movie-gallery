@@ -11,6 +11,8 @@ export class MovieCarouselSmartComponent implements OnInit {
 
   private trendingMoviesWrapper: TopRatedMoviesWrapper;
 
+  private popularTvShowsWrapper: TopRatedMoviesWrapper;
+
   constructor(private movieService: TokenInterceptorService) { }
 
   ngOnInit() {
@@ -29,6 +31,13 @@ export class MovieCarouselSmartComponent implements OnInit {
             console.log(JSON.stringify(this.trendingMoviesWrapper, null, 4));
           }
         )
+
+    this.movieService.getPopularTvMovies()
+          .subscribe(
+            (tvShows: TopRatedMoviesWrapper) => {
+              this.popularTvShowsWrapper = tvShows;
+            }
+          )
   }
 
 }

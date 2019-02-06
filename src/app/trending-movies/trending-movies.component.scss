@@ -1,16 +1,25 @@
 .movie-list {
-       display: flex;
-       justify-content: flex-start;
-       flex-direction: row;
-       flex-wrap: wrap;
        height: 80vh;
-       margin: 9rem;
+       background-color:rgba(0, 0, 0, 0.9);
+
+    &__title {
+        padding-left: 86px;
+        padding-top: 2rem;
+        color:white;
+    }
+
+    &__movie {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
     &__card {
         display: flex;
         height: 280px;
         width: 175px;
-        margin: 2.6rem;
+        margin: 1rem 2.6rem 1rem 2.6rem;
+        border:3px solid rebeccapurple;
 
         &--img {
             height:100%;

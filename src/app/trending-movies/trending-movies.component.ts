@@ -16,6 +16,9 @@ export class TrendingMoviesComponent implements OnInit {
   @Input()
     trendingMovies: TopRatedMoviesWrapper;
 
+  @Input()
+    popularTvShows: TopRatedMoviesWrapper;
+
   private imagePath: any;
 
   constructor(private router: Router) { }
@@ -52,6 +55,17 @@ export class TrendingMoviesComponent implements OnInit {
       }
 
       return this.imagePath;
+    } else if (this.popularTvShows !== undefined) {
+      this.imagePath = {
+        'background-image': `linear-gradient(
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 0),
+        rgba(0, 0, 0, 1)),
+        url(${this.popularTvShows.base_url}${this.popularTvShows.size}${poster_path})`,
+        'backgroundground-repeat': 'no-repeat',
+        'background-size': 'cover',
+        'background-position': 'center'
+      }
     }
   }
 
