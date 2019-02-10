@@ -8,14 +8,13 @@ import { Observable } from 'rxjs';
 import { imagePathConfiguration } from '../../config/config';
 import { TopRatedMovies } from '../models/top-rated-movies';
 
-import {  NgZone } from '@angular/core';
-
 @Component({
   selector: 'trending-movies',
   templateUrl: './trending-movies.component.html',
   styleUrls: ['./trending-movies.component.scss']
 })
 export class TrendingMoviesComponent implements OnInit {
+  private CLASS_NAME = "TrendingMoviesComponent";
 
   @Input()
     popularMovies: Observable<TopRatedMovies>;
@@ -24,16 +23,20 @@ export class TrendingMoviesComponent implements OnInit {
     trendingMovies: Observable<TopRatedMovies>;
 
   @Input()
+    upcomingMovies: Observable<TopRatedMovies>;
+
+  @Input()
     popularTvShows: TopRatedMoviesWrapper;
 
   private imagePath: any;
-  private test: boolean = false;
+  private test: string = "p";
 
   constructor(private router: Router,
-              private config: imagePathConfiguration,
-              public zone: NgZone) { }
+              private config: imagePathConfiguration
+              ) { }
 
   ngOnInit() {
+
     //this.trendingMovies.topRatedMovies.results = this.trendingMovies.topRatedMovies.results.slice(0, 10);
   }
 
@@ -87,10 +90,11 @@ export class TrendingMoviesComponent implements OnInit {
     this.router.navigate(['movie-detail', id]);
   }
 
-  getDiff() {
-    this.test = !this.test;
+  getDiff(letter: string) {
     console.log("hit");
     console.log(this.test);
+
+    this.test = letter;   
    // this.zone.run(() => this.test = !this.test);
   }
 

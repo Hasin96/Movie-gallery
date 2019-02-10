@@ -16,6 +16,7 @@ export class MovieCarouselSmartComponent implements OnInit {
 
   private popularTvShowsWrapper: TopRatedMoviesWrapper;
 
+  private upcomingMovies: Observable<TopRatedMovies>;
   private popularMovies: Observable<TopRatedMovies>;
   private trendingMovies: Observable<TopRatedMovies>;
 
@@ -31,8 +32,10 @@ export class MovieCarouselSmartComponent implements OnInit {
     //       //console.log(JSON.stringify(this.popularMoviesWrapper, null, 4));
     //     }
     //   )
+    console.log("PINEAPPLEKING");
     this.popularMovies = this.movieService.topRatedMovies;
     this.trendingMovies = this.movieService.trendingMovies;
+    this.upcomingMovies = this.movieService.upcomingShows;
     this.movieService.getPopularMovies();
     this.movieService.getTrendingMovies();
 

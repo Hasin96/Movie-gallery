@@ -1,8 +1,9 @@
-<section class="movie-list" *ngIf="!test">
+<section class="movie-list" *ngIf="test === 'p'">
   <div class="movie-list__heading">
     Popular top 20  
-    <span (click)="getDiff()">Popular | </span>
-    <span (click)="getDiff()">Trending</span>
+    <span (click)="getDiff('p')">Popular | </span>
+    <span (click)="getDiff('t')">Trending</span>
+    <span (click)="getDiff('u')">Upcoming</span>
   </div>
   <div class="movie-list__movie" *ngIf="popularMovies | async as movies">
     <div class="movie-list__card" *ngFor="let movie of movies.results | slice :0 : 14" (click)="GetDetails(movie.id)">
@@ -19,13 +20,31 @@
 </section>
 
 
-<section class="movie-list" *ngIf="test">
+<section class="movie-list" *ngIf="test === 't'">
     <div class="movie-list__heading">
         Popular top 20  
-        <span>Popular | </span>
-        <span (click)="getDiff()">Trending</span>
+        <span (click)="getDiff('p')">Popular | </span>
+        <span (click)="getDiff('t')">Trending</span>
+        <span (click)="getDiff('u')">Upcoming</span>
       </div>
   <div class="movie-list__movie"  *ngIf="trendingMovies | async as movies">
+    <div class="movie-list__card" *ngFor="let Tmovie of movies.results | slice: 0 : 14" (click)="GetDetails(Tmovie.id)">
+      <div class="movie-list__card--img" [ngStyle]="getImagePath(Tmovie.poster_path)">
+        <span class="movie-list__title">{{Tmovie.title}}</span>
+      </div>
+    </div>
+  </div>
+  
+</section>
+
+<section class="movie-list" *ngIf="test === 'u'">
+    <div class="movie-list__heading">
+        Popular top 20  
+        <span (click)="getDiff('p')">Popular | </span>
+        <span (click)="getDiff('t')">Trending</span>
+        <span (click)="getDiff('u')">Upcoming</span>
+      </div>
+  <div class="movie-list__movie"  *ngIf="upcomingMovies | async as movies">
     <div class="movie-list__card" *ngFor="let Tmovie of movies.results | slice: 0 : 14" (click)="GetDetails(Tmovie.id)">
       <div class="movie-list__card--img" [ngStyle]="getImagePath(Tmovie.poster_path)">
         <span class="movie-list__title">{{Tmovie.title}}</span>
