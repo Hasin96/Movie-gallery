@@ -1,3 +1,36 @@
-<p>
-  movie-detail works!
-</p>
+<section class="header" [ngStyle]="getImagePath()">
+  <div class="header__description">
+          
+          <div class="header__description--img" [ngStyle]="getImagePaths()">
+          </div>
+        <div class="header__description--description">
+            <h1 class="header__description--title"> {{movie.title}}</h1>
+            <span class="header__description--stars" *ngFor="let item of createRange(rating)">
+              <fa-icon [icon]="faStar"></fa-icon>
+            </span>
+            <span class="header__description--rating">
+              {{movie.vote_average}} / 10
+            </span>
+            <div class="header__description--genres">
+              <span *ngFor="let genre of movie.genres">
+                {{genre.name}} |
+              </span>
+            </div>
+            <span>
+              {{movie.overview}}
+            </span>
+        </div>
+  </div>
+</section>
+
+<section class="body">
+  <div class="body__overview">
+    {{movie.overview}}
+  </div>
+  <div class="body__cast">
+    haha
+  </div>
+  <div class="body__similar-movies">
+    haha
+  </div>
+</section>

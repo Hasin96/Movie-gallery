@@ -1,4 +1,4 @@
-export class configuration {
+export class imagePathConfiguration {
  config = {
     "images": {
       "base_url": "http://image.tmdb.org/t/p/",

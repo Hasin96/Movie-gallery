@@ -20,7 +20,7 @@ export class MovieCarouselSmartComponent implements OnInit {
       .subscribe(
         (movies: TopRatedMoviesWrapper) => {
           this.popularMoviesWrapper = movies;
-          console.log(JSON.stringify(this.popularMoviesWrapper, null, 4));
+          //console.log(JSON.stringify(this.popularMoviesWrapper, null, 4));
         }
       )
 
@@ -28,7 +28,7 @@ export class MovieCarouselSmartComponent implements OnInit {
         .subscribe(
           (movies: TopRatedMoviesWrapper) => {
             this.trendingMoviesWrapper = movies;
-            console.log(JSON.stringify(this.trendingMoviesWrapper, null, 4));
+            //console.log(JSON.stringify(this.trendingMoviesWrapper, null, 4));
           }
         )
 
@@ -36,7 +36,7 @@ export class MovieCarouselSmartComponent implements OnInit {
           .subscribe(
             (tvShows: TopRatedMoviesWrapper) => {
               this.popularTvShowsWrapper = tvShows;
-              console.log("HASIN", JSON.stringify(this.popularTvShowsWrapper, null, 2))
+              //console.log("HASIN", JSON.stringify(this.popularTvShowsWrapper, null, 2))
             }
           )
   }

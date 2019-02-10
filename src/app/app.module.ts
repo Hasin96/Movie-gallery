@@ -6,12 +6,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { CarouselComponent } from './carousel/carousel.component';
 import { HttpClientModule } from '@angular/common/http';
 
-import { configuration } from '../config/config';
+import { imagePathConfiguration } from '../config/config';
 import { MovieDetailComponent } from './movie-detail/movie-detail.component';
 import { MovieSearchComponent } from './movie-search/movie-search.component';
 import { TrendingMoviesComponent } from './trending-movies/trending-movies.component';
 import { MovieCarouselSmartComponent } from './movie-carousel-smart/movie-carousel-smart.component';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,9 +25,10 @@ import { MovieCarouselSmartComponent } from './movie-carousel-smart/movie-carous
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule 
   ],
-  providers: [configuration],
+  providers: [imagePathConfiguration],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
