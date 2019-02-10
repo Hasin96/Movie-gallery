@@ -88,6 +88,7 @@ export class TokenInterceptorService {
                 this.trendingMovies = this._trendingShows.asObservable();
               }
 
+              
     
   loadAll() {
     console.log("loadALL() called")
@@ -185,6 +186,23 @@ export class TokenInterceptorService {
         return val.id === id;
       }
     )
+    console.log("CHECK", movie);
+    if (movie === undefined) {
+      movie = this.dataStore.topRated.results.find(
+        (val: results) => {
+          return val.id === id;
+        }
+      )
+    }
+
+    if (movie === undefined) {
+      movie = this.dataStore.trendingMovies.results.find(
+        (val: results) => {
+          return val.id === id;
+        }
+      )
+    }
+    
     return movie;
   }
 
