@@ -3,6 +3,13 @@ import { TopRatedMoviesWrapper } from '../carousel.service';
 
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs';
+
+import { imagePathConfiguration } from '../../config/config';
+import { TopRatedMovies } from '../models/top-rated-movies';
+
+import {  NgZone } from '@angular/core';
+
 @Component({
   selector: 'trending-movies',
   templateUrl: './trending-movies.component.html',
@@ -11,21 +18,25 @@ import { Router } from '@angular/router';
 export class TrendingMoviesComponent implements OnInit {
 
   @Input()
-    popularMovies: TopRatedMoviesWrapper;
+    popularMovies: Observable<TopRatedMovies>;
 
   @Input()
-    trendingMovies: TopRatedMoviesWrapper;
+    trendingMovies: Observable<TopRatedMovies>;
 
   @Input()
     popularTvShows: TopRatedMoviesWrapper;
 
   private imagePath: any;
+  private test: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private config: imagePathConfiguration,
+              public zone: NgZone) { }
 
   ngOnInit() {
     //this.trendingMovies.topRatedMovies.results = this.trendingMovies.topRatedMovies.results.slice(0, 10);
   }
+
 
   private getImagePath(poster_path: string) {
 
@@ -35,7 +46,7 @@ export class TrendingMoviesComponent implements OnInit {
         rgba(0, 0, 0, 0),
         rgba(0, 0, 0, 0),
         rgba(0, 0, 0, 1)),
-        url(${this.popularMovies.base_url}${this.popularMovies.size}${poster_path})`,
+        url(${this.config.config.images.secure_base_url}${this.config.config.images.backdrop_sizes[3]}${poster_path})`,
         'backgroundground-repeat': 'no-repeat',
         'background-size': 'cover',
         'background-position': 'center'
@@ -49,7 +60,7 @@ export class TrendingMoviesComponent implements OnInit {
         rgba(0, 0, 0, 0),
         rgba(0, 0, 0, 0),
         rgba(0, 0, 0, 1)),
-        url(${this.trendingMovies.base_url}${this.trendingMovies.size}${poster_path})`,
+        url(${this.config.config.images.secure_base_url}${this.config.config.images.backdrop_sizes[3]}${poster_path})`,
         'backgroundground-repeat': 'no-repeat',
         'background-size': 'cover',
         'background-position': 'center'
@@ -74,6 +85,13 @@ export class TrendingMoviesComponent implements OnInit {
 
   private GetDetails(id: string) {
     this.router.navigate(['movie-detail', id]);
+  }
+
+  getDiff() {
+    this.test = !this.test;
+    console.log("hit");
+    console.log(this.test);
+   // this.zone.run(() => this.test = !this.test);
   }
 
 }

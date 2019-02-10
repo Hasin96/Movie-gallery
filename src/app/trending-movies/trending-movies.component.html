@@ -1,24 +1,32 @@
-<section class="movie-list" *ngIf="popularMovies">
-  <div class="movie-list__heading">Popular top 20</div>
-  <div class="movie-list__movie">
-    <div class="movie-list__card" *ngFor="let movie of popularMovies.topRatedMovies.results" (click)="GetDetails(movie.id)">
+<section class="movie-list" *ngIf="!test">
+  <div class="movie-list__heading">
+    Popular top 20  
+    <span (click)="getDiff()">Popular | </span>
+    <span (click)="getDiff()">Trending</span>
+  </div>
+  <div class="movie-list__movie" *ngIf="popularMovies | async as movies">
+    <div class="movie-list__card" *ngFor="let movie of movies.results | slice :0 : 14" (click)="GetDetails(movie.id)">
       <div class="movie-list__card--img" [ngStyle]="getImagePath(movie.poster_path)">
         <span class="movie-list__title">{{movie.title}}</span>
       </div>
     </div>
   </div>
-  <div class="border">
+  <!-- <div class="border">
     <div class="line">
 
     </div>
-  </div>
+  </div> -->
 </section>
 
 
-<section class="movie-list" *ngIf="trendingMovies">
-    <div class="movie-list__heading">Trending top 20</div>
-  <div class="movie-list__movie">
-    <div class="movie-list__card" *ngFor="let Tmovie of trendingMovies.topRatedMovies.results" (click)="GetDetails(Tmovie.id)">
+<section class="movie-list" *ngIf="test">
+    <div class="movie-list__heading">
+        Popular top 20  
+        <span>Popular | </span>
+        <span (click)="getDiff()">Trending</span>
+      </div>
+  <div class="movie-list__movie"  *ngIf="trendingMovies | async as movies">
+    <div class="movie-list__card" *ngFor="let Tmovie of movies.results | slice: 0 : 14" (click)="GetDetails(Tmovie.id)">
       <div class="movie-list__card--img" [ngStyle]="getImagePath(Tmovie.poster_path)">
         <span class="movie-list__title">{{Tmovie.title}}</span>
       </div>
@@ -27,7 +35,7 @@
   
 </section>
 
-<section class="movie-list" *ngIf="popularTvShows">
+<!-- <section class="movie-list" *ngIf="popularTvShows">
   <div class="movie-list__heading">Popular top 20</div>
 <div class="movie-list__movie">
   <div class="movie-list__card" *ngFor="let tvShow of popularTvShows.topRatedMovies.results" (click)="GetDetails(tvShow.id)">
@@ -36,4 +44,4 @@
     </div>
   </div>
 </div>
-</section>
+</section> -->

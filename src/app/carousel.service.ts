@@ -36,11 +36,16 @@ export interface TopRatedMoviesWrapper {
 })
 export class TokenInterceptorService {
   private CLASS_NAME = "TokenInterceptorService";
-  upcomingShows: Observable<TopRatedMovies>
+  upcomingShows: Observable<TopRatedMovies>;
+  topRatedMovies: Observable<TopRatedMovies>;
+  trendingMovies: Observable<TopRatedMovies>;
   private _upcomingShows: BehaviorSubject<TopRatedMovies>; 
-  private baseUrl: string;
+  private _topRatedShows: BehaviorSubject<TopRatedMovies>;
+  private _trendingShows: BehaviorSubject<TopRatedMovies>;
   private dataStore: {  // This is where we will store our data in memory
-    upcomingShows: TopRatedMovies
+    upcomingShows: TopRatedMovies,
+    topRated: TopRatedMovies,
+    trendingMovies: TopRatedMovies
   };
 
   private genreURL: string = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+apikey+'&language=en-GB';
@@ -50,17 +55,17 @@ export class TokenInterceptorService {
   private trendingMoviesUrl: string = `https://api.themoviedb.org/3/movie/top_rated?api_key=${apikey}&language=en-US&page=1`;
   private popularTvShowsURL: string = `https://api.themoviedb.org/3/tv/popular?api_key=${apikey}&language=en-US&page=1`
 
-  private topRatedMovies: TopRatedMovies;
+  //private topRatedMovies: TopRatedMovies;
   private topRatedMoviesTest: TopRatedMovies;
   private genresTest;
   // for genre
   private genres;
 
   // popular movies
-  private popularMovies: TopRatedMovies;
+  //private popularMovies: TopRatedMovies;
 
   // trending movies
-  private trendingMovies: TopRatedMovies;
+  //private trendingMovies: TopRatedMovies;
 
   // popular tv shows
   private popularTvShows: TopRatedMovies;
@@ -70,10 +75,17 @@ export class TokenInterceptorService {
               private common: CommonService,
               private coreService: MoviedbRequestsService
               ) { 
-                this.dataStore = { upcomingShows: null}
-                this.baseUrl  = 'http://56e05c3213da80110013eba3.mockapi.io/api';
+                this.dataStore = { 
+                  upcomingShows: null,
+                  topRated: null,
+                  trendingMovies: null
+                }
+                this._topRatedShows = <BehaviorSubject<TopRatedMovies>>new BehaviorSubject({});
+                this.topRatedMovies = this._topRatedShows.asObservable();
                 this._upcomingShows = <BehaviorSubject<TopRatedMovies>>new BehaviorSubject({});
                 this.upcomingShows = this._upcomingShows.asObservable();
+                this._trendingShows = <BehaviorSubject<TopRatedMovies>>new BehaviorSubject({});
+                this.trendingMovies = this._trendingShows.asObservable();
               }
 
     
@@ -81,12 +93,12 @@ export class TokenInterceptorService {
     console.log("loadALL() called")
     let obs = this.http.get<TopRatedMovies>(this.url)
         .pipe(switchMap(movies => {
-          this.topRatedMovies = movies;
+          
           return this.http.get<Genre>(this.genreURL)
             .pipe(map(data => {
               this.genres = data;
               
-              this.topRatedMovies.results = this.topRatedMovies.results.filter(
+              movies.results = movies.results.filter(
                 (movie: results, index: number, arr: results[]) => {
                   //let genreId: number = movie.genre_ids[0];
                   let genre = [];
@@ -108,9 +120,7 @@ export class TokenInterceptorService {
                 }
               )
               
-              let numberToRemove: number = this.topRatedMovies.results.length - 4;
-              this.topRatedMovies.results.splice(4, numberToRemove);
-              return this.topRatedMovies;
+              return movies;
             }));
         }));
 
@@ -219,43 +229,122 @@ export class TokenInterceptorService {
 
   }
 
-  getPopularMovies(): Observable<TopRatedMoviesWrapper> {
-    return this.http.get<TopRatedMovies>(this.popularMoviesUrl)
-      .pipe(map((movies: TopRatedMovies) => {
-        this.popularMovies = movies;
+  getPopularMovies() {
+    // return this.http.get<TopRatedMovies>(this.popularMoviesUrl)
+    //   .pipe(map((movies: TopRatedMovies) => {
+    //     this.popularMovies = movies;
 
-        let numberToRemove: number = this.popularMovies.results.length - 14;
-        this.popularMovies.results.splice(14, numberToRemove);
+    //     let numberToRemove: number = this.popularMovies.results.length - 14;
+    //     this.popularMovies.results.splice(14, numberToRemove);
 
-        let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-          topRatedMovies: this.popularMovies,
-          size: this.config.config.images.backdrop_sizes[3],
-          base_url: this.config.config.images.secure_base_url
-        };
+    //     let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
+    //       topRatedMovies: this.popularMovies,
+    //       size: this.config.config.images.backdrop_sizes[3],
+    //       base_url: this.config.config.images.secure_base_url
+    //     };
 
-        return wrapper;
-      }))
+    //     return wrapper;
+    //   }))
 
+    let obs = this.http.get<TopRatedMovies>(this.popularMoviesUrl)
+        .pipe(switchMap(movies => {
+          return this.http.get<Genre>(this.genreURL)
+            .pipe(map(data => {
+              movies.results = movies.results.filter(
+                (movie: results, index: number, arr: results[]) => {
+                  //let genreId: number = movie.genre_ids[0];
+                  let genre = [];
+
+                  this.genres.genres.filter(
+                    (val) => {
+                      // if (val.id == genreId) {
+                      //   genre = val;
+                      // }
+                      for(let i = 0; i < movie.genre_ids.length; i++) {
+                        if (val.id == movie.genre_ids[i]) {
+                          genre.push(val);
+                        }
+                      }
+                    }
+                  )
+                  arr[index].genres = genre;
+                  return movie;
+                }
+              )
+              
+              return movies;
+            }));
+        }));
+
+        obs.subscribe(
+          (obj) => {
+            console.log("HIT");
+            this.dataStore.topRated = obj;
+            this._topRatedShows.next(Object.assign({}, this.dataStore).topRated);
+          }
+        )
+
+        console.log("pie");
   }
 
-  getTrendingMovies(): Observable<TopRatedMoviesWrapper> {
-    return this.http.get<TopRatedMovies>(this.trendingMoviesUrl)
-    .pipe(map((movies: TopRatedMovies) => {
-      this.trendingMovies = movies;
+  getTrendingMovies() {
+    // return this.http.get<TopRatedMovies>(this.trendingMoviesUrl)
+    // .pipe(map((movies: TopRatedMovies) => {
+    //   this.trendingMovies = movies;
 
-      let numberToRemove: number = this.trendingMovies.results.length - 14;
-      this.trendingMovies.results.splice(14, numberToRemove);
+    //   let numberToRemove: number = this.trendingMovies.results.length - 14;
+    //   this.trendingMovies.results.splice(14, numberToRemove);
 
-      let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-        topRatedMovies: this.trendingMovies,
-        size: this.config.config.images.backdrop_sizes[3],
-        base_url: this.config.config.images.secure_base_url
-      };
+    //   let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
+    //     topRatedMovies: this.trendingMovies,
+    //     size: this.config.config.images.backdrop_sizes[3],
+    //     base_url: this.config.config.images.secure_base_url
+    //   };
 
-     // console.log(JSON.stringify(this.trendingMovies, null, 2));
+    //  // console.log(JSON.stringify(this.trendingMovies, null, 2));
 
-      return wrapper;
-    }))
+    //   return wrapper;
+    // }))
+
+    let obs = this.http.get<TopRatedMovies>(this.trendingMoviesUrl)
+        .pipe(switchMap(movies => {
+          return this.http.get<Genre>(this.genreURL)
+            .pipe(map(data => {
+              movies.results = movies.results.filter(
+                (movie: results, index: number, arr: results[]) => {
+                  //let genreId: number = movie.genre_ids[0];
+                  let genre = [];
+
+                  this.genres.genres.filter(
+                    (val) => {
+                      // if (val.id == genreId) {
+                      //   genre = val;
+                      // }
+                      for(let i = 0; i < movie.genre_ids.length; i++) {
+                        if (val.id == movie.genre_ids[i]) {
+                          genre.push(val);
+                        }
+                      }
+                    }
+                  )
+                  arr[index].genres = genre;
+                  return movie;
+                }
+              )
+              
+              return movies;
+            }));
+        }));
+
+        obs.subscribe(
+          (obj) => {
+            console.log("HIT");
+            this.dataStore.trendingMovies = obj;
+            this._trendingShows.next(Object.assign({}, this.dataStore).trendingMovies);
+          }
+        )
+
+        console.log("pie");
   }
 
 
