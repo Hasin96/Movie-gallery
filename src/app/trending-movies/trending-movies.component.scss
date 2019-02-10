@@ -1,6 +1,5 @@
 .movie-list {
        height: 80vh;
-       background-color:rgba(0, 0, 0, 0.9);
 
     &__heading {
         padding-left: 86px;
@@ -34,4 +33,15 @@
 
 
 
+}
+.border {
+    height:10%;
+    width:100%;
+}
+
+.line {
+    background-image: linear-gradient(to right, hsla(279, 29%, 9%, 1),hsla(279, 29%, 9%, 1), white,hsla(279, 29%, 9%, 1),  hsla(279, 29%, 9%, 1));
+    height: 1.1%;
+    margin-top:3rem;
+    box-shadow: 0 0 100px 30px rgba(0, 0, 0, 0.8);
 }

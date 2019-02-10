@@ -24,6 +24,7 @@ export class TrendingMoviesComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
+    //this.trendingMovies.topRatedMovies.results = this.trendingMovies.topRatedMovies.results.slice(0, 10);
   }
 
   private getImagePath(poster_path: string) {
