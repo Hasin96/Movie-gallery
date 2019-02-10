@@ -21,7 +21,9 @@
       <div class="slider__desc">
         <h3 class="slider__genre">Latest</h3>
         <h2 class="slider__caption">{{movie.title}}</h2> 
-        <h3 class="slider__rating">{{movie.genres.name}} | {{movie.vote_average}} Rating</h3>
+        <h3 class="slider__rating">
+          {{movie.genres[0].name}} | {{movie.vote_average}} Rating
+        </h3>
         <!-- <p class="slider__txt">{{movie.overview}}</p>  -->
         <button (click)='onClickDetailBtn(movie)' class="slider__view">Details</button>
       </div>
