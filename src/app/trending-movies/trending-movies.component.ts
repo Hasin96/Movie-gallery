@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TopRatedMoviesWrapper } from '../carousel.service';
 
 import { Router } from '@angular/router';
@@ -20,13 +20,9 @@ export class TrendingMoviesComponent implements OnInit {
     popularMovies: Observable<TopRatedMovies>;
 
   @Input()
-    trendingMovies: Observable<TopRatedMovies>;
+    popularTvShows: Observable<TopRatedMovies>;
 
-  @Input()
-    upcomingMovies: Observable<TopRatedMovies>;
-
-  @Input()
-    popularTvShows: TopRatedMoviesWrapper;
+  @Output() exampleOutput = new EventEmitter<string>();
 
   private imagePath: any;
   private test: string = "p";
@@ -40,10 +36,14 @@ export class TrendingMoviesComponent implements OnInit {
     //this.trendingMovies.topRatedMovies.results = this.trendingMovies.topRatedMovies.results.slice(0, 10);
   }
 
+  exampleMethodChild(letter: string) {
+    console.log("HASINHASIN");
+    this.exampleOutput.emit(letter);
+ }
+
 
   private getImagePath(poster_path: string) {
 
-    if (this.popularMovies !== undefined) {
       this.imagePath = {
         'background-image': `linear-gradient(
         rgba(0, 0, 0, 0),
@@ -56,34 +56,6 @@ export class TrendingMoviesComponent implements OnInit {
       }
 
       return this.imagePath;
-
-    } else if (this.trendingMovies !== undefined) {
-      this.imagePath = {
-        'background-image': `linear-gradient(
-        rgba(0, 0, 0, 0),
-        rgba(0, 0, 0, 0),
-        rgba(0, 0, 0, 1)),
-        url(${this.config.config.images.secure_base_url}${this.config.config.images.backdrop_sizes[3]}${poster_path})`,
-        'backgroundground-repeat': 'no-repeat',
-        'background-size': 'cover',
-        'background-position': 'center'
-      }
-
-      return this.imagePath;
-    } else if (this.popularTvShows !== undefined) {
-      this.imagePath = {
-        'background-image': `linear-gradient(
-        rgba(0, 0, 0, 0),
-        rgba(0, 0, 0, 0),
-        rgba(0, 0, 0, 1)),
-        url(${this.popularTvShows.base_url}${this.popularTvShows.size}${poster_path})`,
-        'backgroundground-repeat': 'no-repeat',
-        'background-size': 'cover',
-        'background-position': 'center'
-      }
-
-      return this.imagePath;
-    }
   }
 
   private GetDetails(id: string) {
@@ -93,8 +65,8 @@ export class TrendingMoviesComponent implements OnInit {
   getDiff(letter: string) {
     console.log("hit");
     console.log(this.test);
-
-    this.test = letter;   
+    this.exampleMethodChild(letter);
+    //this.test = letter;   
    // this.zone.run(() => this.test = !this.test);
   }
 

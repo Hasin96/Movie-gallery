@@ -39,13 +39,16 @@ export class TokenInterceptorService {
   upcomingShows: Observable<TopRatedMovies>;
   topRatedMovies: Observable<TopRatedMovies>;
   trendingMovies: Observable<TopRatedMovies>;
+  tvShows: Observable<TopRatedMovies>;
   private _upcomingShows: BehaviorSubject<TopRatedMovies>; 
   private _topRatedShows: BehaviorSubject<TopRatedMovies>;
   private _trendingShows: BehaviorSubject<TopRatedMovies>;
+  private _tvShows: BehaviorSubject<TopRatedMovies>;
   private dataStore: {  // This is where we will store our data in memory
     upcomingShows: TopRatedMovies,
     topRated: TopRatedMovies,
-    trendingMovies: TopRatedMovies
+    trendingMovies: TopRatedMovies,
+    tvShows
   };
 
   private genreURL: string = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+apikey+'&language=en-GB';
@@ -61,12 +64,6 @@ export class TokenInterceptorService {
   // for genre
   private genres;
 
-  // popular movies
-  //private popularMovies: TopRatedMovies;
-
-  // trending movies
-  //private trendingMovies: TopRatedMovies;
-
   // popular tv shows
   private popularTvShows: TopRatedMovies;
 
@@ -78,7 +75,8 @@ export class TokenInterceptorService {
                 this.dataStore = { 
                   upcomingShows: null,
                   topRated: null,
-                  trendingMovies: null
+                  trendingMovies: null,
+                  tvShows: null
                 }
                 this._topRatedShows = <BehaviorSubject<TopRatedMovies>>new BehaviorSubject({});
                 this.topRatedMovies = this._topRatedShows.asObservable();
@@ -86,6 +84,8 @@ export class TokenInterceptorService {
                 this.upcomingShows = this._upcomingShows.asObservable();
                 this._trendingShows = <BehaviorSubject<TopRatedMovies>>new BehaviorSubject({});
                 this.trendingMovies = this._trendingShows.asObservable();
+                this._tvShows = <BehaviorSubject<TopRatedMovies>>new BehaviorSubject({});
+                this.tvShows = this._tvShows.asObservable();
               }
 
               
@@ -366,23 +366,45 @@ export class TokenInterceptorService {
   }
 
 
-  getPopularTvMovies(): Observable<TopRatedMoviesWrapper> {
-    return this.http.get<TopRatedMovies>(this.popularTvShowsURL)
-    .pipe(map((tvShows: TopRatedMovies) => {
-      this.popularTvShows = tvShows;
+  getPopularTvMovies() {
+    let obs = this.http.get<TopRatedMovies>(this.popularTvShowsURL)
+        .pipe(switchMap(movies => {
+          return this.http.get<Genre>(this.genreURL)
+            .pipe(map(data => {
+              movies.results = movies.results.filter(
+                (movie: results, index: number, arr: results[]) => {
+                  //let genreId: number = movie.genre_ids[0];
+                  let genre = [];
 
-      let numberToRemove: number = this.popularTvShows.results.length - 14;
-      this.popularTvShows.results.splice(14, numberToRemove);
+                  this.genres.genres.filter(
+                    (val) => {
+                      // if (val.id == genreId) {
+                      //   genre = val;
+                      // }
+                      for(let i = 0; i < movie.genre_ids.length; i++) {
+                        if (val.id == movie.genre_ids[i]) {
+                          genre.push(val);
+                        }
+                      }
+                    }
+                  )
+                  arr[index].genres = genre;
+                  return movie;
+                }
+              )
+              
+              return movies;
+            }));
+        }));
 
-      let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-        topRatedMovies: this.popularTvShows,
-        size: this.config.config.images.backdrop_sizes[3],
-        base_url: this.config.config.images.secure_base_url
-      };
+        obs.subscribe(
+          (obj) => {
+            console.log("HIT");
+            this.dataStore.tvShows = obj;
+            this._tvShows.next(Object.assign({}, this.dataStore).tvShows);
+          }
+        )
 
-      //console.log(JSON.stringify(this.popularTvShows, null, 2));
-
-      return wrapper;
-    }))
+        console.log("pie");
   }
 }

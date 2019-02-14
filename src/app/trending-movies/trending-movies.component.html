@@ -1,4 +1,4 @@
-<section class="movie-list" *ngIf="test === 'p'">
+<section class="movie-list">
   <div class="movie-list__heading">
     Popular top 20  
     <span (click)="getDiff('p')">Popular | </span>
@@ -20,47 +20,13 @@
 </section>
 
 
-<section class="movie-list" *ngIf="test === 't'">
-    <div class="movie-list__heading">
-        Popular top 20  
-        <span (click)="getDiff('p')">Popular | </span>
-        <span (click)="getDiff('t')">Trending</span>
-        <span (click)="getDiff('u')">Upcoming</span>
-      </div>
-  <div class="movie-list__movie"  *ngIf="trendingMovies | async as movies">
-    <div class="movie-list__card" *ngFor="let Tmovie of movies.results | slice: 0 : 14" (click)="GetDetails(Tmovie.id)">
-      <div class="movie-list__card--img" [ngStyle]="getImagePath(Tmovie.poster_path)">
-        <span class="movie-list__title">{{Tmovie.title}}</span>
-      </div>
-    </div>
-  </div>
-  
-</section>
-
-<section class="movie-list" *ngIf="test === 'u'">
-    <div class="movie-list__heading">
-        Popular top 20  
-        <span (click)="getDiff('p')">Popular | </span>
-        <span (click)="getDiff('t')">Trending</span>
-        <span (click)="getDiff('u')">Upcoming</span>
-      </div>
-  <div class="movie-list__movie"  *ngIf="upcomingMovies | async as movies">
-    <div class="movie-list__card" *ngFor="let Tmovie of movies.results | slice: 0 : 14" (click)="GetDetails(Tmovie.id)">
-      <div class="movie-list__card--img" [ngStyle]="getImagePath(Tmovie.poster_path)">
-        <span class="movie-list__title">{{Tmovie.title}}</span>
-      </div>
-    </div>
-  </div>
-  
-</section>
-
-<!-- <section class="movie-list" *ngIf="popularTvShows">
+<section class="movie-list">
   <div class="movie-list__heading">Popular top 20</div>
-<div class="movie-list__movie">
-  <div class="movie-list__card" *ngFor="let tvShow of popularTvShows.topRatedMovies.results" (click)="GetDetails(tvShow.id)">
+<div class="movie-list__movie" *ngIf="popularTvShows | async as tvShows">
+  <div class="movie-list__card" *ngFor="let tvShow of tvShows.results | slice:0 : 14" (click)="GetDetails(tvShow.id)">
     <div class="movie-list__card--img" [ngStyle]="getImagePath(tvShow.poster_path)">
       <span class="movie-list__title">{{tvShow.name}}</span>
     </div>
   </div>
 </div>
-</section> -->
+</section>

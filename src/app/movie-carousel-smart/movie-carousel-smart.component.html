@@ -1,14 +1,15 @@
 <section class="movies">
     <h1 class="movies__header">Movies</h1>
+    <h1 class="tvShows__header">Tv Shows</h1>
 </section>
 
 
-<trending-movies [upcomingMovies]="upcomingMovies" [trendingMovies]="trendingMovies" [popularMovies]="popularMovies"></trending-movies>
+<trending-movies (exampleOutput)="exampleMethodParent($event)" [popularTvShows]="popularTvShows" [popularMovies]="popularMovies"></trending-movies>
 
 <!-- <trending-movies [trendingMovies]="trendingMovies"></trending-movies>  -->
 
 <!-- <section class="tvShows">
-    <h1 class="tvShows__header">Tv Shows</h1>
+    
 </section>
 
 <trending-movies [popularTvShows]="popularTvShowsWrapper"></trending-movies>  -->

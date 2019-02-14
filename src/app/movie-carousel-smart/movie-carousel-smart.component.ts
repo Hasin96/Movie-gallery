@@ -10,15 +10,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./movie-carousel-smart.component.scss']
 })
 export class MovieCarouselSmartComponent implements OnInit {
-  private popularMoviesWrapper: TopRatedMoviesWrapper;
+  private popularTvShows: Observable<TopRatedMovies>;
 
-  private trendingMoviesWrapper: TopRatedMoviesWrapper;
-
-  private popularTvShowsWrapper: TopRatedMoviesWrapper;
-
-  private upcomingMovies: Observable<TopRatedMovies>;
   private popularMovies: Observable<TopRatedMovies>;
-  private trendingMovies: Observable<TopRatedMovies>;
 
   private bul: boolean = false;
 
@@ -34,10 +28,12 @@ export class MovieCarouselSmartComponent implements OnInit {
     //   )
     console.log("PINEAPPLEKING");
     this.popularMovies = this.movieService.topRatedMovies;
-    this.trendingMovies = this.movieService.trendingMovies;
-    this.upcomingMovies = this.movieService.upcomingShows;
+    this.popularTvShows = this.movieService.tvShows;
+    // this.trendingMovies = this.movieService.trendingMovies;
+    // this.upcomingMovies = this.movieService.upcomingShows;
     this.movieService.getPopularMovies();
     this.movieService.getTrendingMovies();
+    this.movieService.getPopularTvMovies();
 
     // this.movieService.getTrendingMovies()
     //     .subscribe(
@@ -47,15 +43,38 @@ export class MovieCarouselSmartComponent implements OnInit {
     //       }
     //     )
 
-    this.movieService.getPopularTvMovies()
-          .subscribe(
-            (tvShows: TopRatedMoviesWrapper) => {
-              this.popularTvShowsWrapper = tvShows;
-              //console.log("HASIN", JSON.stringify(this.popularTvShowsWrapper, null, 2))
-            }
-          )
+    // this.movieService.getPopularTvMovies()
+    //       .subscribe(
+    //         (tvShows: TopRatedMoviesWrapper) => {
+    //           this.popularTvShowsWrapper = tvShows;
+    //           //console.log("HASIN", JSON.stringify(this.popularTvShowsWrapper, null, 2))
+    //         }
+    //       )
   }
 
-  
- 
+  exampleMethodParent(letter: string) {
+    console.log("HASIN LOOK THE LETTER IS " + letter);
+
+    switch(letter) {
+      case "p": {
+        console.log("P");
+        this.popularMovies = this.movieService.topRatedMovies;
+        break;
+      }
+      case "t": {
+        console.log("t");
+        this.popularMovies = this.movieService.trendingMovies;
+        break;
+      }
+      case "u": {
+        console.log("u")
+        this.popularMovies = this.movieService.upcomingShows;
+        break;
+      }
+      default: {
+        this.popularMovies = this.movieService.topRatedMovies
+        break;
+      }
+    }
+  }
 }
