@@ -92,91 +92,16 @@ export class TokenInterceptorService {
     
   loadAll() {
     console.log("loadALL() called")
-    let obs = this.http.get<TopRatedMovies>(this.url)
-        .pipe(switchMap(movies => {
-          
-          return this.http.get<Genre>(this.genreURL)
-            .pipe(map(data => {
-              this.genres = data;
-              
-              movies.results = movies.results.filter(
-                (movie: results, index: number, arr: results[]) => {
-                  //let genreId: number = movie.genre_ids[0];
-                  let genre = [];
-
-                  this.genres.genres.filter(
-                    (val) => {
-                      // if (val.id == genreId) {
-                      //   genre = val;
-                      // }
-                      for(let i = 0; i < movie.genre_ids.length; i++) {
-                        if (val.id == movie.genre_ids[i]) {
-                          genre.push(val);
-                        }
-                      }
-                    }
-                  )
-                  arr[index].genres = genre;
-                  return movie;
-                }
-              )
-              
-              return movies;
-            }));
-        }));
-
-        obs.subscribe(
+        this.coreService.getMovies(this.url,this.genreURL).subscribe(
           (obj) => {
             console.log("HIT");
+            console.log(obj);
             this.dataStore.upcomingShows = obj;
             this._upcomingShows.next(Object.assign({}, this.dataStore).upcomingShows);
           }
         )
-
         console.log("pie");
   }
-
-  // public getMovies() : Observable<TopRatedMoviesWrapper> {
-    
-
-  //   return this.http.get<TopRatedMovies>(this.url)
-  //       .pipe(switchMap(movies => {
-  //         this.topRatedMovies = movies;
-          
-  //         let numberToRemove: number = this.topRatedMovies.results.length - 4;
-  //         this.topRatedMovies.results.splice(4, numberToRemove);
-      
-  //         return this.http.get<Genre>(this.genreURL)
-  //           .pipe(map(data => {
-  //             this.genres = data;
-              
-  //             this.topRatedMovies.results = this.topRatedMovies.results.filter(
-  //               (movie: results, index: number, arr: results[]) => {
-  //                 let genreId: number = movie.genre_ids[0];
-  //                 let genre;
-
-  //                 this.genres.genres.filter(
-  //                   (val) => {
-  //                     if (val.id == genreId) {
-  //                       genre = val;
-  //                     }
-  //                   }
-  //                 )
-  //                 arr[index].genres = genre;
-  //                 return movie;
-  //               }
-  //             )
-
-  //             let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-  //               topRatedMovies: this.topRatedMovies,
-  //               size: this.config.config.images.backdrop_sizes[3],
-  //               base_url: this.config.config.images.secure_base_url
-  //             }
-             
-  //             return wrapper;
-  //           }));
-  //       }));
-  // }
 
   getMovieById(id: number) : results { 
     console.log(id);
@@ -248,163 +173,39 @@ export class TokenInterceptorService {
   }
 
   getPopularMovies() {
-    // return this.http.get<TopRatedMovies>(this.popularMoviesUrl)
-    //   .pipe(map((movies: TopRatedMovies) => {
-    //     this.popularMovies = movies;
+    this.coreService.getMovies(this.popularMoviesUrl, this.genreURL).subscribe(
+      (obj) => {
+        console.log("HIT");
+        this.dataStore.topRated = obj;
+        this._topRatedShows.next(Object.assign({}, this.dataStore).topRated);
+      }
+    )
 
-    //     let numberToRemove: number = this.popularMovies.results.length - 14;
-    //     this.popularMovies.results.splice(14, numberToRemove);
-
-    //     let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-    //       topRatedMovies: this.popularMovies,
-    //       size: this.config.config.images.backdrop_sizes[3],
-    //       base_url: this.config.config.images.secure_base_url
-    //     };
-
-    //     return wrapper;
-    //   }))
-
-    let obs = this.http.get<TopRatedMovies>(this.popularMoviesUrl)
-        .pipe(switchMap(movies => {
-          return this.http.get<Genre>(this.genreURL)
-            .pipe(map(data => {
-              movies.results = movies.results.filter(
-                (movie: results, index: number, arr: results[]) => {
-                  //let genreId: number = movie.genre_ids[0];
-                  let genre = [];
-
-                  this.genres.genres.filter(
-                    (val) => {
-                      // if (val.id == genreId) {
-                      //   genre = val;
-                      // }
-                      for(let i = 0; i < movie.genre_ids.length; i++) {
-                        if (val.id == movie.genre_ids[i]) {
-                          genre.push(val);
-                        }
-                      }
-                    }
-                  )
-                  arr[index].genres = genre;
-                  return movie;
-                }
-              )
-              
-              return movies;
-            }));
-        }));
-
-        obs.subscribe(
-          (obj) => {
-            console.log("HIT");
-            this.dataStore.topRated = obj;
-            this._topRatedShows.next(Object.assign({}, this.dataStore).topRated);
-          }
-        )
-
-        console.log("pie");
+    console.log("pie");
   }
 
   getTrendingMovies() {
-    // return this.http.get<TopRatedMovies>(this.trendingMoviesUrl)
-    // .pipe(map((movies: TopRatedMovies) => {
-    //   this.trendingMovies = movies;
+    this.coreService.getMovies(this.trendingMoviesUrl, this.genreURL).subscribe(
+      (obj) => {
+        console.log("HIT");
+        this.dataStore.trendingMovies = obj;
+        this._trendingShows.next(Object.assign({}, this.dataStore).trendingMovies);
+      }
+    )
 
-    //   let numberToRemove: number = this.trendingMovies.results.length - 14;
-    //   this.trendingMovies.results.splice(14, numberToRemove);
-
-    //   let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-    //     topRatedMovies: this.trendingMovies,
-    //     size: this.config.config.images.backdrop_sizes[3],
-    //     base_url: this.config.config.images.secure_base_url
-    //   };
-
-    //  // console.log(JSON.stringify(this.trendingMovies, null, 2));
-
-    //   return wrapper;
-    // }))
-
-    let obs = this.http.get<TopRatedMovies>(this.trendingMoviesUrl)
-        .pipe(switchMap(movies => {
-          return this.http.get<Genre>(this.genreURL)
-            .pipe(map(data => {
-              movies.results = movies.results.filter(
-                (movie: results, index: number, arr: results[]) => {
-                  //let genreId: number = movie.genre_ids[0];
-                  let genre = [];
-
-                  this.genres.genres.filter(
-                    (val) => {
-                      // if (val.id == genreId) {
-                      //   genre = val;
-                      // }
-                      for(let i = 0; i < movie.genre_ids.length; i++) {
-                        if (val.id == movie.genre_ids[i]) {
-                          genre.push(val);
-                        }
-                      }
-                    }
-                  )
-                  arr[index].genres = genre;
-                  return movie;
-                }
-              )
-              
-              return movies;
-            }));
-        }));
-
-        obs.subscribe(
-          (obj) => {
-            console.log("HIT");
-            this.dataStore.trendingMovies = obj;
-            this._trendingShows.next(Object.assign({}, this.dataStore).trendingMovies);
-          }
-        )
-
-        console.log("pie");
+    console.log("pie");
   }
 
 
   getPopularTvMovies() {
-    let obs = this.http.get<TopRatedMovies>(this.popularTvShowsURL)
-        .pipe(switchMap(movies => {
-          return this.http.get<Genre>(this.genreURL)
-            .pipe(map(data => {
-              movies.results = movies.results.filter(
-                (movie: results, index: number, arr: results[]) => {
-                  //let genreId: number = movie.genre_ids[0];
-                  let genre = [];
+    this.coreService.getMovies(this.popularTvShowsURL, this.genreURL).subscribe(
+      (obj) => {
+        console.log("HIT");
+        this.dataStore.tvShows = obj;
+        this._tvShows.next(Object.assign({}, this.dataStore).tvShows);
+      }
+    )
 
-                  this.genres.genres.filter(
-                    (val) => {
-                      // if (val.id == genreId) {
-                      //   genre = val;
-                      // }
-                      for(let i = 0; i < movie.genre_ids.length; i++) {
-                        if (val.id == movie.genre_ids[i]) {
-                          genre.push(val);
-                        }
-                      }
-                    }
-                  )
-                  arr[index].genres = genre;
-                  return movie;
-                }
-              )
-              
-              return movies;
-            }));
-        }));
-
-        obs.subscribe(
-          (obj) => {
-            console.log("HIT");
-            this.dataStore.tvShows = obj;
-            this._tvShows.next(Object.assign({}, this.dataStore).tvShows);
-          }
-        )
-
-        console.log("pie");
+    console.log("pie");
   }
 }

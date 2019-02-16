@@ -31,44 +31,35 @@ export class MoviedbRequestsService {
 
 
 
-  public getMovies(typeOfShow: string, filter: string) : Observable<TopRatedMoviesWrapper> {
-    
+  public getMovies(url: string, genreUrl: string): Observable<TopRatedMovies> {
+    return this.http.get<TopRatedMovies>(url)
+      .pipe(switchMap(movies => {
+        return this.http.get<Genre>(genreUrl)
+          .pipe(map(genres => {
+            movies.results = movies.results.filter(
+              (movie: results, index: number, arr: results[]) => {
+                //let genreId: number = movie.genre_ids[0];
+                let genre = [];
 
-    return this.http.get<TopRatedMovies>(`https://api.themoviedb.org/3/${typeOfShow}/${filter}?api_key='${apikey}'&language=en-GB&page=1`)
-        .pipe(switchMap(movies => {
-          // this.topRatedMovies = movies;
-          
-          // let numberToRemove: number = this.topRatedMovies.results.length - 4;
-          // this.topRatedMovies.results.splice(4, numberToRemove);
-      
-          return this.http.get<Genre>(`https://api.themoviedb.org/3/genre/${filter}/list?api_key='${apikey}'&language=en-GB`)
-            .pipe(map(genres => {
-              //this.genres = data;
-              
-              movies.results = movies.results.filter(
-                (movie: results, index: number, arr: results[]) => {
-                  let genre;
-
-                  genres.genres.filter(
-                    (val) => {
-                      if (val.id == movie.genre_ids[0]) {
-                        genre = val;
+                genres.genres.filter(
+                  (val) => {
+                    // if (val.id == genreId) {
+                    //   genre = val;
+                    // }
+                    for (let i = 0; i < movie.genre_ids.length; i++) {
+                      if (val.id == movie.genre_ids[i]) {
+                        genre.push(val);
                       }
                     }
-                  )
-
-                  arr[index].genres = genre;
-
-                  return movie;
-                }
-              )
-
-              let wrapper: TopRatedMoviesWrapper = <TopRatedMoviesWrapper>{
-                topRatedMovies: movies,
+                  }
+                )
+                arr[index].genres = genre;
+                  return movie
               }
+            )
 
-              return wrapper;
-            }));
-        }));
+            return movies;
+          }));
+      }));
   }
 }
