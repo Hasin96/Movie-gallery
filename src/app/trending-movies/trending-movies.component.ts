@@ -70,4 +70,8 @@ export class TrendingMoviesComponent implements OnInit {
    // this.zone.run(() => this.test = !this.test);
   }
 
+  trackByFn(idx, item) {
+    return idx;
+  }
+
 }

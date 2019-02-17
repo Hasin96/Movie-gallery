@@ -6,7 +6,7 @@
     <span (click)="getDiff('u')">Upcoming</span>
   </div>
   <div class="movie-list__movie" *ngIf="popularMovies | async as movies">
-    <div class="movie-list__card" *ngFor="let movie of movies.results | slice :0 : 14" (click)="GetDetails(movie.id)">
+    <div class="movie-list__card" *ngFor="let movie of movies.results | slice :0 : 14; trackBy: trackByFn" (click)="GetDetails(movie.id)">
       <div class="movie-list__card--img" [ngStyle]="getImagePath(movie.poster_path)">
         <span class="movie-list__title">{{movie.title}}</span>
       </div>

@@ -91,16 +91,18 @@ export class TokenInterceptorService {
               
     
   loadAll() {
-    console.log("loadALL() called")
-        this.coreService.getMovies(this.url,this.genreURL).subscribe(
-          (obj) => {
-            console.log("HIT");
-            console.log(obj);
-            this.dataStore.upcomingShows = obj;
-            this._upcomingShows.next(Object.assign({}, this.dataStore).upcomingShows);
-          }
-        )
-        console.log("pie");
+    if(!this.dataStore.upcomingShows) {
+      console.log("loadAll()");
+      this.coreService.getMovies(this.url,this.genreURL).subscribe(
+        (obj) => {
+          console.log("HIT");
+          console.log(obj);
+          this.dataStore.upcomingShows = obj;
+          this._upcomingShows.next(Object.assign({}, this.dataStore).upcomingShows);
+        }
+      )
+      console.log("pie");
+    } 
   }
 
   getMovieById(id: number) : results { 
@@ -124,6 +126,14 @@ export class TokenInterceptorService {
       movie = this.dataStore.trendingMovies.results.find(
         (val: results) => {
           return val.id === id;
+        }
+      )
+    }
+
+    if (movie == undefined) {
+      movie = this.dataStore.tvShows.results.find(
+        (val: results, idx: number, arr: results[]) => {
+          return val.id === id
         }
       )
     }
@@ -173,39 +183,41 @@ export class TokenInterceptorService {
   }
 
   getPopularMovies() {
-    this.coreService.getMovies(this.popularMoviesUrl, this.genreURL).subscribe(
-      (obj) => {
-        console.log("HIT");
-        this.dataStore.topRated = obj;
-        this._topRatedShows.next(Object.assign({}, this.dataStore).topRated);
-      }
-    )
-
-    console.log("pie");
+    if (!this.dataStore.topRated) {
+      console.log("getPopularMovies()");
+      this.coreService.getMovies(this.popularMoviesUrl, this.genreURL).subscribe(
+        (obj) => {
+          console.log("HIT");
+          this.dataStore.topRated = obj;
+          this._topRatedShows.next(Object.assign({}, this.dataStore).topRated);
+        }
+      )
+    }
   }
 
   getTrendingMovies() {
-    this.coreService.getMovies(this.trendingMoviesUrl, this.genreURL).subscribe(
-      (obj) => {
-        console.log("HIT");
-        this.dataStore.trendingMovies = obj;
-        this._trendingShows.next(Object.assign({}, this.dataStore).trendingMovies);
-      }
-    )
-
-    console.log("pie");
+    if (!this.dataStore.trendingMovies) {
+      console.log("getTrendingMovies()");
+      this.coreService.getMovies(this.trendingMoviesUrl, this.genreURL).subscribe(
+        (obj) => {
+          console.log("HIT");
+          this.dataStore.trendingMovies = obj;
+          this._trendingShows.next(Object.assign({}, this.dataStore).trendingMovies);
+        }
+      )
+    }
   }
 
 
   getPopularTvMovies() {
-    this.coreService.getMovies(this.popularTvShowsURL, this.genreURL).subscribe(
-      (obj) => {
-        console.log("HIT");
-        this.dataStore.tvShows = obj;
-        this._tvShows.next(Object.assign({}, this.dataStore).tvShows);
-      }
-    )
-
-    console.log("pie");
+    if (!this.dataStore.tvShows) {
+      this.coreService.getMovies(this.popularTvShowsURL, this.genreURL).subscribe(
+        (obj) => {
+          console.log("HIT");
+          this.dataStore.tvShows = obj;
+          this._tvShows.next(Object.assign({}, this.dataStore).tvShows);
+        }
+      )
+    }
   }
 }

@@ -12,7 +12,9 @@ import { MovieSearchComponent } from './movie-search/movie-search.component';
 import { TrendingMoviesComponent } from './trending-movies/trending-movies.component';
 import { MovieCarouselSmartComponent } from './movie-carousel-smart/movie-carousel-smart.component';
 
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { HomeComponent } from './home/home.component';
+import { FooterComponent } from './footer/footer.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +22,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
     MovieDetailComponent,
     MovieSearchComponent,
     TrendingMoviesComponent,
-    MovieCarouselSmartComponent
+    MovieCarouselSmartComponent,
+    HomeComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

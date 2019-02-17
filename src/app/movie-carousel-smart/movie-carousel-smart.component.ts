@@ -16,6 +16,10 @@ export class MovieCarouselSmartComponent implements OnInit {
 
   private bul: boolean = false;
 
+  private cachedUpComingMovies: Observable<TopRatedMovies>;
+  private cachedTrendingMovies: Observable<TopRatedMovies>;
+  private cachedTopRatedMovies: Observable<TopRatedMovies>;
+
   constructor(private movieService: TokenInterceptorService) { }
 
   ngOnInit() {
@@ -27,8 +31,12 @@ export class MovieCarouselSmartComponent implements OnInit {
     //     }
     //   )
     console.log("PINEAPPLEKING");
-    this.popularMovies = this.movieService.topRatedMovies;
+    this.cachedTopRatedMovies = this.movieService.topRatedMovies;
+    this.cachedUpComingMovies = this.movieService.upcomingShows;
+    this.cachedTrendingMovies = this.movieService.trendingMovies;
     this.popularTvShows = this.movieService.tvShows;
+    
+    this.popularMovies = this.cachedTopRatedMovies;
     // this.trendingMovies = this.movieService.trendingMovies;
     // this.upcomingMovies = this.movieService.upcomingShows;
     this.movieService.getPopularMovies();
@@ -57,22 +65,19 @@ export class MovieCarouselSmartComponent implements OnInit {
 
     switch(letter) {
       case "p": {
-        console.log("P");
-        this.popularMovies = this.movieService.topRatedMovies;
+        this.popularMovies = this.cachedTopRatedMovies;
         break;
       }
       case "t": {
-        console.log("t");
-        this.popularMovies = this.movieService.trendingMovies;
+        this.popularMovies = this.cachedTrendingMovies;
         break;
       }
       case "u": {
-        console.log("u")
-        this.popularMovies = this.movieService.upcomingShows;
+        this.popularMovies = this.cachedUpComingMovies;
         break;
       }
       default: {
-        this.popularMovies = this.movieService.topRatedMovies
+        //this.popularMovies = this.movieService.topRatedMovies
         break;
       }
     }

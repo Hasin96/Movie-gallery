@@ -3,9 +3,10 @@ import { RouterModule, Routes} from '@angular/router';
 
 import { CarouselComponent } from './carousel/carousel.component';
 import { MovieDetailComponent } from './movie-detail/movie-detail.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', component: CarouselComponent },
+  { path: '', component: HomeComponent },
   { path: 'movie-detail/:id', component: MovieDetailComponent}
 ];
 
