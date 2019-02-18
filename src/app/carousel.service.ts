@@ -13,16 +13,10 @@ import { apikey } from '../environments/movieApiKey';
 // commons service
 import { CommonService } from './common.service';
 import { map, switchMap } from 'rxjs/operators';
-import { Genre } from './models/genres';
+import { Genre, VideoUrl } from './models/genres';
 
 import { MoviedbRequestsService } from './core/moviedb-requests.service';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type':  'application/json',
-    'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjYzg2ZDUzZjg2OGE3ZWZlZmUwYjdmNmNhMGJjODcyYyIsInN1YiI6IjVjMzY2OWJkMGUwYTI2NWE4YjdjZGVlMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AJZKgZZf2ZrsWL6UX6YjL5Vsqz7UBi4VQ1w_vcyDwkU'
-  })
-}
 
 export interface TopRatedMoviesWrapper {
   topRatedMovies: TopRatedMovies,
@@ -51,6 +45,7 @@ export class TokenInterceptorService {
     tvShows
   };
 
+  
   private genreURL: string = 'https://api.themoviedb.org/3/genre/movie/list?api_key='+apikey+'&language=en-GB';
   private url: string = 'https://api.themoviedb.org/3/movie/upcoming?api_key='+apikey+'&language=en-GB&page=1'
   private movieUrl:string = "https://api.themoviedb.org/3/search/movie?api_key="+apikey+"&language=en-US&page=1&include_adult=false&query=";
@@ -105,11 +100,16 @@ export class TokenInterceptorService {
     } 
   }
 
+  getVideoUrl(id: number) {
+    return this.http.get<VideoUrl>(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apikey}&language=en-US`)
+  }
+
   getMovieById(id: number) : results { 
     console.log(id);
     console.log(JSON.stringify(this.dataStore.upcomingShows, null, 2));
     let movie =  this.dataStore.upcomingShows.results.find(
       (val: results, idx: number, arr: results[]) => {
+       
         return val.id === id;
       }
     )
@@ -137,7 +137,7 @@ export class TokenInterceptorService {
         }
       )
     }
-    
+
     return movie;
   }
 
@@ -213,6 +213,7 @@ export class TokenInterceptorService {
     if (!this.dataStore.tvShows) {
       this.coreService.getMovies(this.popularTvShowsURL, this.genreURL).subscribe(
         (obj) => {
+          console.log("HASIN LOOK HERE",JSON.stringify(obj, null, 2));
           console.log("HIT");
           this.dataStore.tvShows = obj;
           this._tvShows.next(Object.assign({}, this.dataStore).tvShows);

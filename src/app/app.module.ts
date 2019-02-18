@@ -14,7 +14,10 @@ import { MovieCarouselSmartComponent } from './movie-carousel-smart/movie-carous
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HomeComponent } from './home/home.component';
-import { FooterComponent } from './footer/footer.component'
+import { FooterComponent } from './footer/footer.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { VideoPlayerComponent } from './video-player/video-player.component'
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +27,9 @@ import { FooterComponent } from './footer/footer.component'
     TrendingMoviesComponent,
     MovieCarouselSmartComponent,
     HomeComponent,
-    FooterComponent
+    FooterComponent,
+    LoginPageComponent,
+    VideoPlayerComponent
   ],
   imports: [
     BrowserModule,

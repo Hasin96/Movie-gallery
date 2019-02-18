@@ -8,7 +8,7 @@ import { Subscription, BehaviorSubject, Observable, of } from 'rxjs';
 // apikey
 import { apikey } from '../../environments/movieApiKey';
 
-import { map, switchMap, shareReplay } from 'rxjs/operators';
+import { map, switchMap, shareReplay, mergeMap } from 'rxjs/operators';
 import { Genre } from '../models/genres';
 
 const CACHE_SIZE = 1;
@@ -45,7 +45,7 @@ export class MoviedbRequestsService {
 
   private getMovieRequest(url: string, genreUrl: string) : Observable<TopRatedMovies> {
     return this.http.get<TopRatedMovies>(url)
-      .pipe(switchMap(movies => {
+      .pipe(mergeMap(movies => {
         return this.http.get<Genre>(genreUrl)
           .pipe(map(genres => {
             movies.results = movies.results.filter(
