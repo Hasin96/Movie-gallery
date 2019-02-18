@@ -7,8 +7,9 @@ import { TokenInterceptorService, TopRatedMoviesWrapper } from '../carousel.serv
 import { results } from '../models/top-rated-movies';
 
 import { imagePathConfiguration } from '../../config/config';
-
+import { VideoUrl } from '../models/genres';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-movie-detail',
   templateUrl: './movie-detail.component.html',
@@ -16,22 +17,32 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 })
 export class MovieDetailComponent implements OnInit {
   faStar = faStar;
-
   private movieId: string;
   private movie: results;
   private rating: number;
   private imagePath;
-
-  constructor(private activatedRoute: ActivatedRoute,
+  private videoUrl;
+  private url;
+  constructor(private activatedRoute: ActivatedRoute,private domSanitizer : DomSanitizer,
               private service: TokenInterceptorService,
               private config: imagePathConfiguration) { }
 
   ngOnInit() {
+    
     this.activatedRoute.paramMap.subscribe(
       (params: ParamMap) => {
         this.movieId = params.get('id');
         this.movie = this.service.getMovieById(parseInt(this.movieId));
         this.rating = Math.floor(this.movie.vote_average);
+        
+        this.service.getVideoUrl(parseInt(this.movieId)).subscribe(
+          (url: VideoUrl) => {
+            this.videoUrl = url
+            console.log(this.videoUrl.results[0].key);
+            this.url = this.domSanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${this.videoUrl.results[0].key}`);
+            console.log(this.url);
+          }
+        )
         console.log(JSON.stringify(this.movie, null, 2));
       }
     )

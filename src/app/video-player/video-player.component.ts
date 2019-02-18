@@ -4,7 +4,6 @@ import { TokenInterceptorService, TopRatedMoviesWrapper } from '../carousel.serv
 
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { VideoUrl } from '../models/genres';
-import { DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-video-player',
